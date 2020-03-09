@@ -1,49 +1,72 @@
 import logging
 import itertools
-import Model.FinGroups
+from Model.FinGroups import FinGroup
+from Model.FinGroups import FinGroupElement
 
-Sym_logger = logging.getLogger('Sym_logger')
+sym_logger = logging.getLogger('sym_logger')
 logging.basicConfig(level=logging.WARNING)
-Sym_logger.info('Sym logger created')
+sym_logger.info('Sym logger created')
 
-class SymGroup(Model.FinGroups.FinGroup):
-    Sym_logger.info('Initiating SymGroup class')
+class SymGroup(FinGroup):
+    sym_logger.info('Initiating SymGroup class')
 
-    def __init__(self, size):
-        assert(isinstance(size,int) and size > 1)
-        Sym_logger.debug('size is %d' % size)
-        self.element_list = set(g for g in itertools.permutations(range(1, size + 1)))
-        self.size = size
-        self.id = tuple(range(1, size + 1))
-        Sym_logger.info('Symmetric group of size %d created' % size)
+    def __init__(self, order):
+        assert(isinstance(order,int) and order > 1)
+        """
+        Attributes:
+         * .order - an integer denoting the order of the symmetric group
+         * .elements - a set of the objects that are the elements
+         * .identity - a member of .elements that represents the group identity
+        """
+        self.order = order
+        sym_logger.debug('order is %d' % order)
+        element_list = tuple(itertools.permutations(range(1, order + 1)))
+        self.elements = tuple(SymGroupElem(g) for g in element_list)
+        sym_logger.debug('self.elements created')
+        self.identity = FinGroup.get_identity(self.elements)
+        sym_logger.info('Symmetric group of order %d created' % order)
 
-    Sym_logger.info('SymGroup class defined')
+    sym_logger.info('SymGroup class defined')
 
 
 class SymGroupElem():
-    Sym_logger.info('Initiating SymGroupElem class')
+    sym_logger.info('Initiating SymGroupElem class')
 
     def __init__(self, Sn_tuple):
         assert(isinstance(Sn_tuple,tuple))
-        size = len(Sn_tuple)
+        group_order = len(Sn_tuple)
+        test_unique_list = []
         for k in Sn_tuple:
-            assert k in range(1, size + 1)
-        self.size = size
+            assert k in range(1, group_order + 1)
+            assert k not in test_unique_list
+            test_unique_list.append(k)
+            sym_logger.debug('test list is %s' % test_unique_list)
+        self.group_order = group_order
         self.display = Sn_tuple
-        Sym_logger.info('Symmetric group element of size %d defined' % size)
+        self.group_identity = tuple(range(1, group_order + 1))
+        self.inverse = NotImplementedError()
+        sym_logger.info('Symmetric group element {} defined'.format(self.display))
 
     def __mul__(self, second):
-        logging.debug('1st element is %s, 2nd element is %s' %(self, second))
+        sym_logger.debug('1st element is %s, 2nd element is %s' %(self, second))
+        assert(self.group_order == second.group_order)
+        sym_logger.debug('Elements are from symmetric group of group_order %d' % self.group_order)
         result = tuple(second.display[j - 1] for j in self.display)
         return result
 
+    def __eq__(self, other):
+        return self.display == other
+
     def __call__(self, value):
-        assert(value in range(1,5))
+        assert(value in self.group_identity)
         return self.display[value - 1]
 
+    @classmethod
     def get_cycle_representation(self):
         raise NotImplementedError()
 
-    Sym_logger.info('SymGroup class defined')
+    sym_logger.info('SymGroup class defined')
 
 My_S4 = SymGroup(4)
+sym_logger.info('I reached here')
+Bad_element = SymGroupElem((1,2,3,3))
