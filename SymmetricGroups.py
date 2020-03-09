@@ -13,6 +13,7 @@ class SymGroup():
         Sym_logger.debug('size is %d' % size)
         self.element_list = set(g for g in itertools.permutations(range(1, size + 1)))
         self.size = size
+        self.id = tuple(range(1, size + 1))
         Sym_logger.info('Symmetric group of size %d created' % size)
 
     Sym_logger.info('SymGroup class defined')
@@ -38,7 +39,7 @@ class SymGroupElem():
     Sym_logger.info('SymGroup class defined')
 
 My_S4 = SymGroup(4)
-print(My_S4.element_list)
+print(My_S4.id)
 FourTuple = SymGroupElem((4,1,2,3))
 ThreeTuple = SymGroupElem((1,4,2,3))
 
