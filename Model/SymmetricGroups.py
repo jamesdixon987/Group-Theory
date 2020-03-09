@@ -1,11 +1,12 @@
 import logging
 import itertools
+import Model.FinGroups
 
 Sym_logger = logging.getLogger('Sym_logger')
 logging.basicConfig(level=logging.WARNING)
 Sym_logger.info('Sym logger created')
 
-class SymGroup():
+class SymGroup(Model.FinGroups.FinGroup):
     Sym_logger.info('Initiating SymGroup class')
 
     def __init__(self, size):
@@ -36,11 +37,13 @@ class SymGroupElem():
         result = tuple(second.display[j - 1] for j in self.display)
         return result
 
+    def __call__(self, value):
+        assert(value in range(1,5))
+        return self.display[value - 1]
+
+    def get_cycle_representation(self):
+        raise NotImplementedError()
+
     Sym_logger.info('SymGroup class defined')
 
 My_S4 = SymGroup(4)
-print(My_S4.id)
-FourTuple = SymGroupElem((4,1,2,3))
-ThreeTuple = SymGroupElem((1,4,2,3))
-
-print(FourTuple * ThreeTuple)
