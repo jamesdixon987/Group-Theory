@@ -9,9 +9,9 @@ class FinGroup:
         self.elements = elements
 
     @classmethod
-    def get_inverse(self, element):
+    def get_inverse(cls, element):
         fin_group_logger.info('Initiating FinGroup class method get_inverse')
-        for other in self.elements:
+        for other in elements:
             fin_group_logger.debug('Testing %s' % other)
             if other * element == self.id:
                 return other

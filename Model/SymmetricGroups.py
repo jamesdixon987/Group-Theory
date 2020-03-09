@@ -69,4 +69,5 @@ class SymGroupElem():
 
 My_S4 = SymGroup(4)
 sym_logger.info('I reached here')
-Bad_element = SymGroupElem((1,2,3,3))
+Bad_element = SymGroupElem((1,2,4,3))
+print(FinGroup.get_inverse(Bad_element))
