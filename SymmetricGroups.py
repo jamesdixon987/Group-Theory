@@ -1,22 +1,45 @@
 import logging
 import itertools
 
-S4_logger = logging.getLogger('S4_logger')
+Sym_logger = logging.getLogger('Sym_logger')
 logging.basicConfig(level=logging.WARNING)
-S4_logger.info('S4 logger created')
+Sym_logger.info('Sym logger created')
 
-class SymGroup(n):
+class SymGroup():
+    Sym_logger.info('Initiating SymGroup class')
 
-    def __init__(self):
-        # Define it using an element list
-        self.element_list = set(g for g in itertools.permutations(range(n)))
-    # Combining two elements using the group operation is a very important function to define.
+    def __init__(self, size):
+        assert(isinstance(size,int) and size > 1)
+        Sym_logger.debug('size is %d' % size)
+        self.element_list = set(g for g in itertools.permutations(range(1, size + 1)))
+        self.size = size
+        Sym_logger.info('Symmetric group of size %d created' % size)
 
-class SymGroupElem(n):
+    Sym_logger.info('SymGroup class defined')
+
+
+class SymGroupElem():
+    Sym_logger.info('Initiating SymGroupElem class')
+
+    def __init__(self, Sn_tuple):
+        assert(isinstance(Sn_tuple,tuple))
+        size = len(Sn_tuple)
+        for k in Sn_tuple:
+            assert k in range(1, size + 1)
+        self.size = size
+        self.display = Sn_tuple
+        Sym_logger.info('Symmetric group element of size %d defined' % size)
 
     def __mul__(self, second):
-        logging.debug('1st element is %s, 2nd element is %s' %(self.element_list, second.element_list))
-        return (lambda x: tuple(x[0][j] for j in x[1]))
+        logging.debug('1st element is %s, 2nd element is %s' %(self, second))
+        result = tuple(second.display[j - 1] for j in self.display)
+        return result
 
-My_S4 = S4Group()
+    Sym_logger.info('SymGroup class defined')
+
+My_S4 = SymGroup(4)
 print(My_S4.element_list)
+FourTuple = SymGroupElem((4,1,2,3))
+ThreeTuple = SymGroupElem((1,4,2,3))
+
+print(FourTuple * ThreeTuple)
