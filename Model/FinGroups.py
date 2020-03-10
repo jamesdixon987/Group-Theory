@@ -9,11 +9,11 @@ class FinGroup:
         self.elements = elements
 
     @classmethod
-    def get_inverse(cls, element):
+    def get_inverse(cls, element, group):
         fin_group_logger.info('Initiating FinGroup class method get_inverse')
-        for other in elements:
+        for other in group.elements:
             fin_group_logger.debug('Testing %s' % other)
-            if other * element == self.id:
+            if other * element == group.identity:
                 return other
 
         raise ValueError(element)

@@ -61,13 +61,12 @@ class SymGroupElem():
         assert(value in self.group_identity)
         return self.display[value - 1]
 
-    @classmethod
     def get_cycle_representation(self):
         raise NotImplementedError()
 
     sym_logger.info('SymGroup class defined')
 
-My_S4 = SymGroup(4)
-sym_logger.info('I reached here')
-Bad_element = SymGroupElem((1,2,4,3))
-print(FinGroup.get_inverse(Bad_element))
+# My_S4 = SymGroup(4)
+# sym_logger.info('I reached here')
+# Bad_element = SymGroupElem((1,4,2,3))
+# print(FinGroup.get_inverse(Bad_element, My_S4).display)
