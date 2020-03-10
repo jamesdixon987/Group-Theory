@@ -29,7 +29,7 @@ class FinGroup:
 
     @classmethod
     def is_identity(cls, possible_id, elements) -> bool:
-        fin_group_logger.info('Initiating FinGroup class method is_identity')
+        fin_group_logger.info('Initiating FinGroup class method is_identity with %s' % element.display)
         for element in elements:
             if not possible_id * element == element:
                 return False

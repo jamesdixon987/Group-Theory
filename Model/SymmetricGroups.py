@@ -4,7 +4,7 @@ from Model.FinGroups import FinGroup
 from Model.FinGroups import FinGroupElement
 
 sym_logger = logging.getLogger('sym_logger')
-logging.basicConfig(level=logging.WARNING)
+logging.basicConfig(level=logging.INFO)
 sym_logger.info('Sym logger created')
 
 class SymGroup(FinGroup):
@@ -44,8 +44,10 @@ class SymGroupElem():
         self.group_order = group_order
         self.display = Sn_tuple
         self.group_identity = tuple(range(1, group_order + 1))
-        self.inverse = NotImplementedError()
-        sym_logger.info('Symmetric group element {} defined'.format(self.display))
+        sym_logger.debug('Symmetric group element {} defined'.format(self.display))
+
+    def inverse(self, group):
+        return FinGroup.get_inverse(self, group)
 
     def __mul__(self, second):
         sym_logger.debug('1st element is %s, 2nd element is %s' %(self, second))
@@ -53,9 +55,6 @@ class SymGroupElem():
         sym_logger.debug('Elements are from symmetric group of group_order %d' % self.group_order)
         result = tuple(second.display[j - 1] for j in self.display)
         return result
-
-    def __eq__(self, other):
-        return self.display == other
 
     def __call__(self, value):
         assert(value in self.group_identity)
@@ -66,7 +65,9 @@ class SymGroupElem():
 
     sym_logger.info('SymGroup class defined')
 
-# My_S4 = SymGroup(4)
-# sym_logger.info('I reached here')
+My_S4 = SymGroup(4)
+Other_S4 = SymGroup(4)
 # Bad_element = SymGroupElem((1,4,2,3))
 # print(FinGroup.get_inverse(Bad_element, My_S4).display)
+
+print(My_S4.identity == Other_S4.identity)
