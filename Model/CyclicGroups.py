@@ -45,6 +45,13 @@ class CycGroupElem(FinGroupElem):
         assert(isinstance(ZnInt,int))
         assert(ZnInt >= 0)
 
+        try:
+            assert(group_order > ZnInt)
+        except AssertionError:
+            cyc_logger.warning(' %d is too large and  will be reduced modulo %d, resulting in %d.'
+                               %(ZnInt, group_order, ZnInt % group_order))
+            ZnInt = ZnInt % group_order
+
         self.group_order = group_order
         cyc_logger.debug('Group is order %d' %group_order)
         self.associated_group = None
@@ -69,5 +76,6 @@ class CycGroupElem(FinGroupElem):
         cyc_logger.debug('result is %s' %(str(result)))
         return CycGroupElem(result, self.group_order)
 
+a = CycGroupElem(9,6)
 
-
+print(a.display)
