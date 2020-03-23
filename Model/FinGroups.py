@@ -46,6 +46,43 @@ class FinGroup:
             count += 1
         return count
 
+class FinGroupElem():
 
 
+        # WITHIN EACH SUBCLASS OF FINGROUP, THE FOLLOWING MUST BE DEFINED:
+        #
+        # Attributes:
+        #  * .display - a display of the element
+        #
+        #  Operations:
+        #  * mul - group operation
+        #  * pow - power group operation
+        #
+        #  Methods:
+        #  * group_identity - returns an object, group identity
 
+    def __init__(self):
+        self._inverse_holder = None
+
+    def __eq__(self, other):
+        fin_group_logger.debug('1st element is %s, 2nd element is %s' %(str(self.display), str(other.display)))
+        assert(self.group_order == other.group_order)
+        fin_group_logger.debug('Elements are from symmetric group of group_order %d' % self.group_order)
+        return self.display == other.display
+
+    def __ne__(self, other):
+        fin_group_logger.debug('1st element is %s, 2nd element is %s' %(str(self.display), str(other.display)))
+        return not self.display == other.display
+
+    def __str__(self):
+        return str(self.display)
+
+    def inverse(self, group):
+        assert(isinstance(group, FinGroup))
+        if self._inverse_holder == None:
+            self._inverse_holder = FinGroup.get_inverse(self, group)
+            return self._inverse_holder
+        else: return self._inverse_holder
+
+    def order(self):
+        return FinGroup.get_elem_order(self, group_identity(self))
