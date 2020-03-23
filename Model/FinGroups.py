@@ -24,12 +24,26 @@ class FinGroup:
 
         self.abelian = all(a * b == b * a for a in self.elements for b in self.elements)
 
+    def __iter__(self):
+        fin_group_logger.debug('Initiating FinGroup iterator')
+        # Iterate over the elements of the group, returning the identity first
+        yield self.identity
+        for g in self.elements:
+            if g != self.identity:
+                yield g
+
+    def __contains__(self, item):
+        return item in self.elements
+
+    def size(self):
+        return len(self.elements)
+
     @classmethod
-    def get_inverse(cls, element, group):
+    def get_inverse(cls, g, group):
         fin_group_logger.info('Initiating FinGroup class method get_inverse')
         for other in group.elements:
             fin_group_logger.debug('Testing %s' % other)
-            if other * element == group.identity:
+            if other * g == group.identity:
                 return other
 
         raise ValueError(element)
@@ -37,10 +51,10 @@ class FinGroup:
     @classmethod
     def get_identity(cls, elements):
         fin_group_logger.info('Initiating FinGroup class method get_identity')
-        for element in elements:
-            if (cls.is_identity(element, elements)):
+        for g in elements:
+            if (cls.is_identity(g, elements)):
                 fin_group_logger.info('Identity found')
-                return element
+                return g
             else:fin_group_logger.debug('element %s is not identity' %str(element.display))
         raise ValueError()
 
