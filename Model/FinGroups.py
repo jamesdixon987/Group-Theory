@@ -23,13 +23,14 @@ class FinGroup:
         fin_group_logger.info('Initiating FinGroup class method get_identity')
         for element in elements:
             if (cls.is_identity(element, elements)):
+                fin_group_logger.info('Identity found')
                 return element
-
+            else:fin_group_logger.debug('element %s is not identity' %str(element.display))
         raise ValueError()
 
     @classmethod
     def is_identity(cls, possible_id, elements) -> bool:
-        fin_group_logger.info('Initiating FinGroup class method is_identity with %s' % element.display)
+        fin_group_logger.info('Initiating FinGroup class method is_identity')
         for element in elements:
             if not possible_id * element == element:
                 return False
