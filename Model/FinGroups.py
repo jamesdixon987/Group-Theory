@@ -4,6 +4,19 @@ fin_group_logger = logging.getLogger('fin_group_logger')
 fin_group_logger.info('fin_group_logger created')
 
 class FinGroup:
+
+    """
+    WITHIN EACH SUBCLASS OF FINGROUP, THE FOLLOWING MUST BE DEFINED:
+
+    Attributes:
+     * .elements - a list of the elements
+     * .identity - can be found using FinGroup classmethod get_inverse
+
+     Operations:
+
+     Methods:
+     """
+
     def __init__(self, elements):
         fin_group_logger.info('Initiating FinGroup object')
         self.elements = elements
@@ -49,7 +62,7 @@ class FinGroup:
 class FinGroupElem():
 
     """
-    WITHIN EACH SUBCLASS OF FINGROUP, THE FOLLOWING MUST BE DEFINED:
+    WITHIN EACH SUBCLASS OF FINGROUPELEM, THE FOLLOWING MUST BE DEFINED:
 
     Attributes:
      * .display - a unique (within group) display of the element. Used for __eq__ & __ne__
@@ -81,6 +94,7 @@ class FinGroupElem():
 
     def inverse(self, group):
         assert(isinstance(group, FinGroup))
+        assert(self in group.elements)
         if self._inverse_holder == None:
             self._inverse_holder = FinGroup.get_inverse(self, group)
             return self._inverse_holder

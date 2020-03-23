@@ -22,12 +22,15 @@ class SymGroup(FinGroup):
 
         self.order = order
         sym_logger.debug('order is %d' % order)
+
         element_list = tuple(itertools.permutations(range(1, order + 1)))
         self.elements = tuple(SymGroupElem(g) for g in element_list)
         for g in self.elements:
             g.associated_group = self
         sym_logger.debug('self.elements created')
+
         self.identity = FinGroup.get_identity(self.elements)
+
         sym_logger.info('Symmetric group of order %d created' % order)
 
         FinGroup.__init__(self, self.elements)
@@ -69,7 +72,17 @@ class SymGroupElem(FinGroupElem):
             sym_logger.debug('test list is %s' % test_unique_list)
 
         self.display = Sn_tuple
+
         self.associated_group = None
+
+        self.cycle_repr = SymGroupElem.get_cycle_representation(self)
+        sym_logger.debug('element cycle representation is %s' %str(self.cycle_repr))
+
+        cycle_type = []
+        for g in self.cycle_repr:
+            cycle_type.append(len(g))
+        self.cycle_type = tuple(cycle_type)
+        sym_logger.debug('element cycle type is %s' %str(self.cycle_type))
 
         sym_logger.debug('Symmetric group element {} defined'.format(self.display))
 
@@ -103,10 +116,12 @@ class SymGroupElem(FinGroupElem):
         return self.display[value - 1]
 
     def group_identity(self):
-        return SymGroupElem(tuple(range(1,self.group_order + 1)))
+        if self.associated_group == None:
+            return SymGroupElem(tuple(range(1,self.group_order + 1)))
+        else: return self.associated_group.identity
 
     def get_cycle_representation(self):
-        sym_logger.info('Initialising get_cycle_representation method')
+        sym_logger.debug('Initialising get_cycle_representation method')
         num_list = tuple(range(1,self.group_order + 1))
         done = []
         cycles = []
@@ -129,14 +144,11 @@ class SymGroupElem(FinGroupElem):
                 done.append(num)
                 sym_logger.debug('cycle is %s' %str(cycle))
                 cycles.append(tuple(cycle))
-        if len(cycles) == 1:
-            sym_logger.info('element has one cycle: %s' %str(cycle))
-            return cycles[0]
-        elif len(cycles) == 0:
-            sym_logger.info('element is identity')
+        if len(cycles) == 0:
+            sym_logger.debug('element is identity')
             return ()
         else:
-            sym_logger.info('element cycle representation is %s' %str(cycles))
+            sym_logger.debug('element cycle representation is %s' %str(cycles))
             return tuple(cycles)
 
     sym_logger.info('SymGroup class defined')
