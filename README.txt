@@ -1,1 +1,5 @@
-This package attempts to implement finite group theory. Currently it is restricted to partial functionality on finite symmetric groups. However, it may well expand...
+This package attempts to implement finite group theory. 
+
+Currently it is restricted to partial functionality on finite symmetric groups. 
+
+However, it may well expand...

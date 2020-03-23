@@ -23,12 +23,14 @@ class test_group(unittest.TestCase):
         self.assertEqual(SymGroupElem.get_cycle_representation(element), ((1,2),(3,4)))
         for n in [(1,2,3,4), (1,2,4,3), (3,2,1,4), (3,2,4,1)]:
             elem = SymGroupElem(n)
+            elem.associated_group = S
             self.assertIn(elem, S.elements)
             self.assertEqual(elem.group_order, S.order)
             self.assertEqual(n, elem.display)
             self.assertEqual(SymGroupElem.inverse(elem, S) * elem, S.identity)
             self.assertTrue(elem == elem)
             self.assertFalse(elem != elem)
+            self.assertEqual(elem**-2,FinGroup.get_inverse(elem**2, S))
 
 
 if __name__ == "__main__":

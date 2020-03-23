@@ -24,6 +24,8 @@ class SymGroup(FinGroup):
         sym_logger.debug('order is %d' % order)
         element_list = tuple(itertools.permutations(range(1, order + 1)))
         self.elements = tuple(SymGroupElem(g) for g in element_list)
+        for g in self.elements:
+            g.associated_group = self
         sym_logger.debug('self.elements created')
         self.identity = FinGroup.get_identity(self.elements)
         sym_logger.info('Symmetric group of order %d created' % order)
@@ -58,13 +60,16 @@ class SymGroupElem(FinGroupElem):
 
         group_order = len(Sn_tuple)
         self.group_order = group_order
+
         test_unique_list = []
         for k in Sn_tuple:
             assert k in range(1, group_order + 1)
             assert k not in test_unique_list
             test_unique_list.append(k)
             sym_logger.debug('test list is %s' % test_unique_list)
+
         self.display = Sn_tuple
+        self.associated_group = None
 
         sym_logger.debug('Symmetric group element {} defined'.format(self.display))
 
@@ -86,7 +91,12 @@ class SymGroupElem(FinGroupElem):
         elif power > 1:
             return self * pow(self, power - 1)
         else:
-            return self.inverse[pow(self, -power)]
+            try:
+                assert(self.associated_group != None)
+            except AssertionError:
+                sym_logger.error('Cannot process negative powers without associated group')
+                raise TypeError
+            return FinGroup.get_inverse(pow(self, -power), self.associated_group)
 
     def __call__(self, value):
         assert(value in self.display)
