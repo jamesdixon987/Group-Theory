@@ -56,6 +56,19 @@ class SymGroupElem(FinGroupElem):
          
          Methods:
          * get_cycle_representation - fairly self-explanatory
+         
+         Inherited Attributes:
+         * _inverse_holder - placeholder for inverse, so it doesn't have to be recalculated every time
+         
+         Inherited Operations:
+         * pow - power in group operation
+         * eq & ne - compare elements
+         * str - string representation of element.dsiplay
+         
+         Inherited Methods:
+         * inverse - must have a group associated
+         * order - order of element; must have a group associated
+         * group_identity - must have a group associated
          """
 
         group_order = len(Sn_tuple)
