@@ -37,21 +37,15 @@ class FinGroup:
 
         return True
 
+    @classmethod
+    def get_elem_order(cls, elem, identity):
+        testing = elem
+        count = 1
+        while testing != identity:
+            testing *= elem
+            count += 1
+        return count
 
-class FinGroupElement:
-    def __init__(self, element):
-        self.element = element
 
-    def __eq__(self, other):
-        return self.element == other.element
 
-    def __str__(self):
-        return f"Group element: {str(self.element)}"
 
-    def __pow__(self, element, power):
-        if (power == 0):
-            return self.group_id
-        elif power > 0:
-            return element * pow(element, power - 1)
-        else:
-            return self.inverse[pow(element, -power)]

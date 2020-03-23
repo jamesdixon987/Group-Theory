@@ -1,7 +1,6 @@
 import logging
 import itertools
 from Model.FinGroups import FinGroup
-from Model.FinGroups import FinGroupElement
 
 sym_logger = logging.getLogger('sym_logger')
 logging.basicConfig(level=logging.INFO)
@@ -42,6 +41,7 @@ class SymGroupElem():
         Attributes:
          * .group_order - an integer denoting the order of the symmetric group
          * .display - a display of the tuple representing the element
+         * .order
          
          Operations:
          * mul - group operation
@@ -50,6 +50,7 @@ class SymGroupElem():
          
          Class methods:
          * get_cycle_representation - fairly self-explanatory
+         * group_identity - returns a SymGroupElem object, group identity
          """
 
         group_order = len(Sn_tuple)
@@ -66,6 +67,12 @@ class SymGroupElem():
     def inverse(self, group):
         return FinGroup.get_inverse(self, group)
 
+    def group_identity(self):
+        return SymGroupElem(tuple(range(1,self.group_order + 1)))
+
+    def order(self):
+        return FinGroup.get_elem_order(self, group_identity(self))
+
     def __mul__(self, second):
         sym_logger.debug('1st element is %s, 2nd element is %s' %(str(self.display), str(second.display)))
         assert(self.group_order == second.group_order)
@@ -73,6 +80,17 @@ class SymGroupElem():
         result = tuple(second.display[j - 1] for j in self.display)
         sym_logger.debug('result is %s' %(str(result)))
         return SymGroupElem(result)
+
+    def __pow__(self, power):
+        assert(isinstance(power, int))
+        if power == 0:
+            return group_identity(self)
+        elif power == 1:
+            return self
+        elif power > 1:
+            return self * pow(self, power - 1)
+        else:
+            return self.inverse[pow(self, -power)]
 
     def __call__(self, value):
         assert(value in self.display)
@@ -99,9 +117,4 @@ class SymGroupElem():
 
     sym_logger.info('SymGroup class defined')
 
-My_S4 = SymGroup(4)
-Other_S4 = SymGroup(4)
-# Bad_element = SymGroupElem((1,4,2,3))
-# print(FinGroup.get_inverse(Bad_element, My_S4).display)
 
-print(str(My_S4.identity == Other_S4.identity) + 'hello')
