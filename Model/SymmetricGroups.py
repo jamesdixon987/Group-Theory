@@ -4,7 +4,7 @@ from Model.FinGroups import FinGroup
 from Model.FinGroups import FinGroupElem
 
 sym_logger = logging.getLogger('sym_logger')
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 sym_logger.info('Sym logger created')
 
 class SymGroup(FinGroup):
