@@ -52,13 +52,10 @@ class SymGroupElem(FinGroupElem):
          
          Operations:
          * mul - group operation
-         * pow - power group operation
-         * eq & ne - compares tuples
          * call - shows where a number (1 to n) moves to under the element
          
-         Class methods:
+         Methods:
          * get_cycle_representation - fairly self-explanatory
-         * group_identity - returns a SymGroupElem object, group identity
          """
 
         group_order = len(Sn_tuple)
@@ -131,4 +128,3 @@ class SymGroupElem(FinGroupElem):
             return tuple(cycles)
 
     sym_logger.info('SymGroup class defined')
-

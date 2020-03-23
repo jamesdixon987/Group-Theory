@@ -40,6 +40,34 @@ class CycGroup(FinGroup):
 class CycGroupElem(FinGroupElem):
     cyc_logger.info('Initiating CycGroupElem class')
 
+    """
+        Attributes:
+         * .group_order - an integer denoting the order of the symmetric group
+         * .display - a display of the tuple representing the element
+         * .number - the number that represents the element in modular arithmetic
+         * .associated_group - the group instance that the element is associated with
+         
+         Operations:
+         * mul - group operation
+         
+         Methods:
+         * group_identity - returns a SymGroupElem object, group identity
+         
+         Inherited Attributes:
+         * _inverse_holder - placeholder for inverse, so it doesn't have to be recalculated every time
+         
+         Inherited Operations:
+         * pow - power in group operation
+         * eq & ne - compare elements
+         * str - string representation of element.dsiplay
+         
+         Inherited Methods:
+         * inverse - must have a group associated
+         * order - order of element; must have a group associated
+         * group_identity - must have a group associated
+         
+        """
+
     def __init__(self, ZnInt, group_order):
         cyc_logger.debug('Creating instance of CycGroupElem')
         assert(isinstance(ZnInt,int))
@@ -76,6 +104,3 @@ class CycGroupElem(FinGroupElem):
         cyc_logger.debug('result is %s' %(str(result)))
         return CycGroupElem(result, self.group_order)
 
-a = CycGroupElem(9,6)
-
-print(a.display)

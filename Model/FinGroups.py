@@ -61,8 +61,8 @@ class FinGroup:
     @classmethod
     def is_identity(cls, possible_id, elements) -> bool:
         fin_group_logger.info('Initiating FinGroup class method is_identity')
-        for element in elements:
-            if not possible_id * element == element:
+        for g in elements:
+            if not possible_id * g == g:
                 return False
 
         return True
@@ -126,8 +126,12 @@ class FinGroupElem():
             return FinGroup.get_inverse(pow(self, -power), self.associated_group)
 
     def inverse(self, group):
-        assert(isinstance(group, FinGroup))
-        assert(self in group.elements)
+        try:
+            assert(self.associated_group != None)
+            fin_group_logger.debug('Element has associated group')
+        except AssertionError:
+            raise AttributeError
+            fin_group_logger.warning('Cannot find inverse if element has no associated group')
         if self._inverse_holder == None:
             self._inverse_holder = FinGroup.get_inverse(self, group)
             return self._inverse_holder
