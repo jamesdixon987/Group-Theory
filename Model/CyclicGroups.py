@@ -69,8 +69,5 @@ class CycGroupElem(FinGroupElem):
         cyc_logger.debug('result is %s' %(str(result)))
         return CycGroupElem(result, self.group_order)
 
-    def group_identity(self):
-        if self.associated_group == None:
-            return CycGroupElem(0,self.group_order)
-        else: return self.associated_group.identity
+
 

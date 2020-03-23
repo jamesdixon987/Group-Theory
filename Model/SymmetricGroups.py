@@ -73,7 +73,7 @@ class SymGroupElem(FinGroupElem):
 
         self.display = Sn_tuple
 
-        self.associated_group == None
+        self.associated_group = None
 
         self.cycle_repr = SymGroupElem.get_cycle_representation(self)
         sym_logger.debug('element cycle representation is %s' %str(self.cycle_repr))
@@ -95,30 +95,9 @@ class SymGroupElem(FinGroupElem):
         sym_logger.debug('result is %s' %(str(result)))
         return SymGroupElem(result)
 
-    def __pow__(self, power):
-        assert(isinstance(power, int))
-        if power == 0:
-            return group_identity(self)
-        elif power == 1:
-            return self
-        elif power > 1:
-            return self * pow(self, power - 1)
-        else:
-            try:
-                assert(self.associated_group != None)
-            except AssertionError:
-                sym_logger.error('Cannot process negative powers without associated group')
-                raise TypeError
-            return FinGroup.get_inverse(pow(self, -power), self.associated_group)
-
     def __call__(self, value):
         assert(value in self.display)
         return self.display[value - 1]
-
-    def group_identity(self):
-        if self.associated_group == None:
-            return SymGroupElem(tuple(range(1,self.group_order + 1)))
-        else: return self.associated_group.identity
 
     def get_cycle_representation(self):
         sym_logger.debug('Initialising get_cycle_representation method')

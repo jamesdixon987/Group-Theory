@@ -46,7 +46,7 @@ class FinGroup:
             if other * g == group.identity:
                 return other
 
-        raise ValueError(element)
+        raise ValueError(g)
 
     @classmethod
     def get_identity(cls, elements):
@@ -86,7 +86,6 @@ class FinGroupElem():
 
      Operations:
      * mul - group operation
-     * pow - power group operation
 
      Methods:
      * group_identity - returns an object, group identity
@@ -110,6 +109,22 @@ class FinGroupElem():
     def __str__(self):
         return str(self.display)
 
+    def __pow__(self, power):
+        assert(isinstance(power, int))
+        if power == 0:
+            return group_identity(self)
+        elif power == 1:
+            return self
+        elif power > 1:
+            return self * pow(self, power - 1)
+        else:
+            try:
+                assert(self.associated_group != None)
+            except AssertionError:
+                sym_logger.error('Cannot process negative powers without associated group')
+                raise TypeError
+            return FinGroup.get_inverse(pow(self, -power), self.associated_group)
+
     def inverse(self, group):
         assert(isinstance(group, FinGroup))
         assert(self in group.elements)
@@ -120,3 +135,12 @@ class FinGroupElem():
 
     def order(self):
         return FinGroup.get_elem_order(self, group_identity(self))
+
+    def group_identity(self):
+        try:
+            assert(self.associated_group != None)
+            fin_group_logger.debug('Element has associated group')
+        except AssertionError:
+            raise AttributeError
+            fin_group_logger.warning('Cannot find identity if element has no associated group')
+        return self.associated_group.identity
