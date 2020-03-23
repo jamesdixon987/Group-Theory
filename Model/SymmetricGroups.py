@@ -45,7 +45,8 @@ class SymGroupElem():
          
          Operations:
          * mul - group operation
-         * eq - compares tuples
+         * pow - power group operation
+         * eq & ne - compares tuples
          * call - shows where a number (1 to n) moves to under the element
          
          Class methods:
@@ -63,9 +64,13 @@ class SymGroupElem():
             sym_logger.debug('test list is %s' % test_unique_list)
         self.display = Sn_tuple
         sym_logger.debug('Symmetric group element {} defined'.format(self.display))
+        self._inverse = None
 
     def inverse(self, group):
-        return FinGroup.get_inverse(self, group)
+        if self._inverse == None:
+            self._inverse = FinGroup.get_inverse(self, group)
+            return self._inverse
+        else: return self._inverse
 
     def group_identity(self):
         return SymGroupElem(tuple(range(1,self.group_order + 1)))
@@ -75,6 +80,7 @@ class SymGroupElem():
 
     def __mul__(self, second):
         sym_logger.debug('1st element is %s, 2nd element is %s' %(str(self.display), str(second.display)))
+        assert(isinstance(second, SymGroupElem))
         assert(self.group_order == second.group_order)
         sym_logger.debug('Elements are from symmetric group of group_order %d' % self.group_order)
         result = tuple(second.display[j - 1] for j in self.display)
