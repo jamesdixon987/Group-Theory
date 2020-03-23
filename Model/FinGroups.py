@@ -48,18 +48,20 @@ class FinGroup:
 
 class FinGroupElem():
 
+    """
+    WITHIN EACH SUBCLASS OF FINGROUP, THE FOLLOWING MUST BE DEFINED:
 
-        # WITHIN EACH SUBCLASS OF FINGROUP, THE FOLLOWING MUST BE DEFINED:
-        #
-        # Attributes:
-        #  * .display - a display of the element
-        #
-        #  Operations:
-        #  * mul - group operation
-        #  * pow - power group operation
-        #
-        #  Methods:
-        #  * group_identity - returns an object, group identity
+    Attributes:
+     * .display - a unique (within group) display of the element. Used for __eq__ & __ne__
+
+     Operations:
+     * mul - group operation
+     * pow - power group operation
+
+     Methods:
+     * group_identity - returns an object, group identity
+     """
+
 
     def __init__(self):
         self._inverse_holder = None

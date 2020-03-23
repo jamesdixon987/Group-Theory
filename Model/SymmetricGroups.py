@@ -68,9 +68,6 @@ class SymGroupElem(FinGroupElem):
 
         sym_logger.debug('Symmetric group element {} defined'.format(self.display))
 
-    def group_identity(self):
-        return SymGroupElem(tuple(range(1,self.group_order + 1)))
-
     def __mul__(self, second):
         sym_logger.debug('1st element is %s, 2nd element is %s' %(str(self.display), str(second.display)))
         assert(isinstance(second, SymGroupElem))
@@ -95,13 +92,42 @@ class SymGroupElem(FinGroupElem):
         assert(value in self.display)
         return self.display[value - 1]
 
-    @classmethod
+    def group_identity(self):
+        return SymGroupElem(tuple(range(1,self.group_order + 1)))
+
     def get_cycle_representation(self):
-        raise NotImplementedError()
+        sym_logger.info('Initialising get_cycle_representation method')
+        num_list = tuple(range(1,self.group_order + 1))
+        done = []
+        cycles = []
+        for num in num_list:
+            sym_logger.debug('next num is %d' %num)
+            if num in done:
+                sym_logger.debug('%d in done' %num)
+                pass
+            elif self.display[num - 1] == num:
+                sym_logger.debug('%d not in a cycle' %num)
+                done.append(num)
+            else:
+                current_num = self.display[num - 1]
+                sym_logger.debug('current_num is %d' %current_num)
+                cycle = [num]
+                while current_num != num:
+                    done.append(current_num)
+                    cycle.append(current_num)
+                    current_num = self.display[current_num - 1]
+                done.append(num)
+                sym_logger.debug('cycle is %s' %str(cycle))
+                cycles.append(tuple(cycle))
+        if len(cycles) == 1:
+            sym_logger.info('element has one cycle: %s' %str(cycle))
+            return cycles[0]
+        elif len(cycles) == 0:
+            sym_logger.info('element is identity')
+            return ()
+        else:
+            sym_logger.info('element cycle representation is %s' %str(cycles))
+            return tuple(cycles)
 
     sym_logger.info('SymGroup class defined')
 
-
-a = SymGroupElem((1,2,4,3))
-b = SymGroupElem((1,2,4,3))
-print(a==b)

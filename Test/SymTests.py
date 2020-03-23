@@ -18,7 +18,9 @@ class test_group(unittest.TestCase):
 
     def test_sym_group_elem(self):
         S = SymGroup(4)
+        element = SymGroupElem((2,1,4,3))
         self.assertTrue(S.identity == SymGroupElem((1,2,3,4)))
+        self.assertEqual(SymGroupElem.get_cycle_representation(element), ((1,2),(3,4)))
         for n in [(1,2,3,4), (1,2,4,3), (3,2,1,4), (3,2,4,1)]:
             elem = SymGroupElem(n)
             self.assertIn(elem, S.elements)
