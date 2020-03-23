@@ -96,6 +96,7 @@ class FinGroupElem():
     def __init__(self):
         self._inverse_holder = None
 
+
     def __eq__(self, other):
         fin_group_logger.debug('1st element is %s, 2nd element is %s' %(str(self.display), str(other.display)))
         assert(self.group_order == other.group_order)

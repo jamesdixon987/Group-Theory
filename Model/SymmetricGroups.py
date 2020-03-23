@@ -73,7 +73,7 @@ class SymGroupElem(FinGroupElem):
 
         self.display = Sn_tuple
 
-        self.associated_group = None
+        self.associated_group == None
 
         self.cycle_repr = SymGroupElem.get_cycle_representation(self)
         sym_logger.debug('element cycle representation is %s' %str(self.cycle_repr))
