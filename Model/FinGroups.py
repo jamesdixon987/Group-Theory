@@ -19,7 +19,10 @@ class FinGroup:
 
     def __init__(self, elements):
         fin_group_logger.info('Initiating FinGroup object')
+
         self.elements = elements
+
+        self.abelian = all(a * b == b * a for a in self.elements for b in self.elements)
 
     @classmethod
     def get_inverse(cls, element, group):
