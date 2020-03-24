@@ -9,7 +9,6 @@ from Model.FinGroups import FinGroupElem
 
 class test_group(unittest.TestCase):
     def test_sym_group(self):
-        print('yes')
         for n in range(2, 8):
             S = SymGroup(n)
             self.assertEqual(S.order, n)
@@ -19,13 +18,12 @@ class test_group(unittest.TestCase):
 
             iter_group = iter(S)
             count = 0
-            while count < 10:
+            while count < min([factorial(n) - 1, 10]):
                 a = next(iter_group)
                 self.assertTrue(FinGroup.get_inverse(a, S) * a == S.identity)
                 count += 1
 
     def test_sym_group_elem(self):
-        print('way to go!')
         S = SymGroup(4)
         element = SymGroupElem((2,1,4,3))
         self.assertTrue(S.identity == SymGroupElem((1,2,3,4)))
