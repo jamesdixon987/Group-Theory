@@ -9,14 +9,23 @@ from Model.FinGroups import FinGroupElem
 
 class test_group(unittest.TestCase):
     def test_sym_group(self):
+        print('yes')
         for n in range(2, 8):
             S = SymGroup(n)
             self.assertEqual(S.order, n)
             self.assertEqual(len(S.elements), factorial(n))
+            self.assertTrue(isinstance(S.elements, tuple))
             self.assertEqual(S.identity, SymGroupElem(tuple(range(1, n + 1))))
-            self.assertTrue(all(FinGroup.get_inverse(a) * a == S.identity) for a in S.elements)
+
+            iter_group = iter(S)
+            count = 0
+            while count < 10:
+                a = next(iter_group)
+                self.assertTrue(FinGroup.get_inverse(a, S) * a == S.identity)
+                count += 1
 
     def test_sym_group_elem(self):
+        print('way to go!')
         S = SymGroup(4)
         element = SymGroupElem((2,1,4,3))
         self.assertTrue(S.identity == SymGroupElem((1,2,3,4)))
@@ -27,10 +36,11 @@ class test_group(unittest.TestCase):
             elem.associated_group = S
             self.assertIn(elem, S.elements)
             self.assertEqual(elem.group_order, S.order)
-            self.assertEqual(n, elem.display)
+            self.assertEqual(n, elem.tuple_rep)
             self.assertEqual(SymGroupElem.inverse(elem, S) * elem, S.identity)
             self.assertTrue(elem == elem)
             self.assertFalse(elem != elem)
+            self.assertTrue(elem**2 == elem * elem)
             self.assertEqual(elem**-2,FinGroup.get_inverse(elem**2, S))
 
 
