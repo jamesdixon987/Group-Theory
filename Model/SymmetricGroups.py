@@ -6,7 +6,7 @@ from Model.FinGroups import FinGroupElem
 
 sym_logger = logging.getLogger('sym_logger')
 logging.basicConfig(level=logging.WARNING)
-sym_logger.info('Sym logger created')
+sym_logger.info('sym_logger created')
 
 class SymGroup(FinGroup):
     sym_logger.info('Initiating SymGroup class')
@@ -75,21 +75,21 @@ class SymGroupElem(FinGroupElem):
          * group_identity - must have a group associated
          """
 
-        group_order = len(Sn_tuple)
-        self.group_order = group_order
 
+        sym_logger.info('Element is being generated with tuple')
+        self.group_order = len(Sn_tuple)
         test_unique_list = []
         for k in Sn_tuple:
-            assert k in range(1, group_order + 1)
+            assert k in range(1, self.group_order + 1)
             assert k not in test_unique_list
             test_unique_list.append(k)
             sym_logger.debug('test list is %s' % test_unique_list)
 
-        self.display = Sn_tuple
+        self.tuple_rep = Sn_tuple
 
         self.associated_group = None
 
-        self.cycle_repr = SymGroupElem.get_cycle_representation(self)
+        self.display = SymGroupElem.get_cycle_representation(self)
         sym_logger.debug('element cycle representation is %s' %str(self.cycle_repr))
 
         sym_logger.debug('Symmetric group element {} defined'.format(self.display))
@@ -104,12 +104,12 @@ class SymGroupElem(FinGroupElem):
         return SymGroupElem(result)
 
     def __call__(self, value):
-        assert(value in self.display)
-        return self.display[value - 1]
+        assert(value in self.tuple_rep)
+        return self.tuple_rep[value - 1]
 
     def cycle_type(self):
         result = []
-        for g in self.cycle_repr:
+        for g in self.display:
             result.append(len(g))
         sym_logger.debug('element cycle type is %s' %str(result))
         return tuple(result)
@@ -148,3 +148,37 @@ class SymGroupElem(FinGroupElem):
 
     sym_logger.info('SymGroup class defined')
 
+
+dih_logger = logging.getLogger('dih_logger')
+dih_logger.info('dih_logger created')
+
+class DiGroup(FinGroup):
+    dih_logger.info('Initiating DiGroup class')
+
+    def __init__(self, order):
+        dih_logger.info('Initiating DiGroup object')
+        dih_logger.warning('Digroup(n) represents the symmetries of an n-sided polygon')
+        assert(isinstance(order,int) and order > 1)
+
+        """
+        Attributes:
+         * .order - an integer denoting the order of the dihedral group
+         * .elements - a set of the objects that are the elements
+         * .identity - a member of .elements that represents the group identity
+        """
+
+        self.order = order
+        dih_logger.debug('order is %d' % order)
+
+        if order == 2:
+            self.elements = FinGroupElem.generate(SymGroupElem((2,1)))
+        else:
+            raise NotImplementedError
+        dih_logger.debug('self.elements created')
+
+        dih_logger.info('Dihedral group of order %d created' % order)
+
+        FinGroup.__init__(self, self.elements)
+
+        self.type = 'Dihedral'
+    dih_logger.info('Dihedral class defined')
