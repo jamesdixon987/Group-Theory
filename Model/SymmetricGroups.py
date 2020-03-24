@@ -18,7 +18,6 @@ class SymGroup(FinGroup):
         Attributes:
          * .order - an integer denoting the order of the symmetric group
          * .elements - a set of the objects that are the elements
-         * .identity - a member of .elements that represents the group identity
         """
 
         self.order = order
@@ -46,10 +45,9 @@ class SymGroupElem(FinGroupElem):
 
         FinGroupElem.__init__(self)
 
-        self.group_type = 'Symmetric'
-
         """
         Attributes:
+         * .group_type - 'Symmetric'
          * .group_order - an integer denoting the order of the symmetric group
          * .display - a display of the tuple representing the element
          * .order
@@ -75,9 +73,10 @@ class SymGroupElem(FinGroupElem):
          * group_identity - must have a group associated
          """
 
+        self.group_type = 'Symmetric'
 
-        sym_logger.info('Element is being generated with tuple')
         self.group_order = len(Sn_tuple)
+
         test_unique_list = []
         for k in Sn_tuple:
             assert k in range(1, self.group_order + 1)
@@ -90,7 +89,7 @@ class SymGroupElem(FinGroupElem):
         self.associated_group = None
 
         self.display = SymGroupElem.get_cycle_representation(self)
-        sym_logger.debug('element cycle representation is %s' %str(self.cycle_repr))
+        sym_logger.debug('element cycle representation is %s' %str(self.display))
 
         sym_logger.debug('Symmetric group element {} defined'.format(self.display))
 
@@ -99,7 +98,7 @@ class SymGroupElem(FinGroupElem):
         assert(isinstance(second, SymGroupElem))
         assert(self.group_order == second.group_order)
         sym_logger.debug('Elements are from symmetric group of group_order %d' % self.group_order)
-        result = tuple(second.display[j - 1] for j in self.display)
+        result = tuple(second.tuple_rep[j - 1] for j in self.tuple_rep)
         sym_logger.debug('result is %s' %(str(result)))
         return SymGroupElem(result)
 
@@ -125,17 +124,17 @@ class SymGroupElem(FinGroupElem):
             if num in done:
                 sym_logger.debug('%d in done' %num)
                 pass
-            elif self.display[num - 1] == num:
+            elif self.tuple_rep[num - 1] == num:
                 sym_logger.debug('%d not in a cycle' %num)
                 done.append(num)
             else:
-                current_num = self.display[num - 1]
+                current_num = self.tuple_rep[num - 1]
                 sym_logger.debug('current_num is %d' %current_num)
                 cycle = [num]
                 while current_num != num:
                     done.append(current_num)
                     cycle.append(current_num)
-                    current_num = self.display[current_num - 1]
+                    current_num = self.tuple_rep[current_num - 1]
                 done.append(num)
                 sym_logger.debug('cycle is %s' %str(cycle))
                 cycles.append(tuple(cycle))

@@ -54,6 +54,8 @@ class GroupElem:
 
     def __eq__(self, other):
         group_logger.debug('1st element is %s, 2nd element is %s' %(str(self.display), str(other.display)))
+        group_logger.info('%s group_order %s' % (str(self.display), self.group_order))
+        group_logger.info('%s group_order %s' % (str(self.display), other.group_order))
         assert(self.group_order == other.group_order)
         group_logger.debug('Elements are from symmetric group of group_order %d' % self.group_order)
         return self.display == other.display
