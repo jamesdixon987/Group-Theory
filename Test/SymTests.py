@@ -21,7 +21,7 @@ class test_group(unittest.TestCase):
         element = SymGroupElem((2,1,4,3))
         self.assertTrue(S.identity == SymGroupElem((1,2,3,4)))
         self.assertEqual(SymGroupElem.get_cycle_representation(element), ((1,2),(3,4)))
-        self.assertEqual(element.cycle_type, (2,2))
+        self.assertEqual(SymGroupElem.cycle_type(element), (2,2))
         for n in [(1,2,3,4), (1,2,4,3), (3,2,1,4), (3,2,4,1)]:
             elem = SymGroupElem(n)
             elem.associated_group = S

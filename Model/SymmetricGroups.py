@@ -1,5 +1,6 @@
 import logging
 import itertools
+from Model.Groups import Group
 from Model.FinGroups import FinGroup
 from Model.FinGroups import FinGroupElem
 
@@ -29,11 +30,11 @@ class SymGroup(FinGroup):
             g.associated_group = self
         sym_logger.debug('self.elements created')
 
-        self.identity = FinGroup.get_identity(self.elements)
-
         sym_logger.info('Symmetric group of order %d created' % order)
 
         FinGroup.__init__(self, self.elements)
+
+        self.type = 'Symmetric'
     sym_logger.info('SymGroup class defined')
 
 
@@ -42,7 +43,10 @@ class SymGroupElem(FinGroupElem):
 
     def __init__(self, Sn_tuple):
         assert(isinstance(Sn_tuple,tuple))
+
         FinGroupElem.__init__(self)
+
+        self.group_type = 'Symmetric'
 
         """
         Attributes:
@@ -88,12 +92,6 @@ class SymGroupElem(FinGroupElem):
         self.cycle_repr = SymGroupElem.get_cycle_representation(self)
         sym_logger.debug('element cycle representation is %s' %str(self.cycle_repr))
 
-        cycle_type = []
-        for g in self.cycle_repr:
-            cycle_type.append(len(g))
-        self.cycle_type = tuple(cycle_type)
-        sym_logger.debug('element cycle type is %s' %str(self.cycle_type))
-
         sym_logger.debug('Symmetric group element {} defined'.format(self.display))
 
     def __mul__(self, second):
@@ -109,7 +107,15 @@ class SymGroupElem(FinGroupElem):
         assert(value in self.display)
         return self.display[value - 1]
 
-    def get_cycle_representation(self):
+    def cycle_type(self):
+        result = []
+        for g in self.cycle_repr:
+            result.append(len(g))
+        sym_logger.debug('element cycle type is %s' %str(result))
+        return tuple(result)
+
+    @classmethod
+    def get_cycle_representation(cls, self):
         sym_logger.debug('Initialising get_cycle_representation method')
         num_list = tuple(range(1,self.group_order + 1))
         done = []
@@ -141,3 +147,4 @@ class SymGroupElem(FinGroupElem):
             return tuple(cycles)
 
     sym_logger.info('SymGroup class defined')
+

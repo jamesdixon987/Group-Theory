@@ -1,4 +1,5 @@
 import logging
+from Model.Groups import Group
 from Model.FinGroups import FinGroup
 from Model.FinGroups import FinGroupElem
 
@@ -29,11 +30,12 @@ class CycGroup(FinGroup):
             g.associated_group = self
         cyc_logger.debug('self.elements created')
 
-        self.identity = FinGroup.get_identity(self.elements)
+        FinGroup.__init__(self, self.elements)
+
+        self.type = 'Cyclic'
 
         cyc_logger.info('Symmetric group of order %d created' % order)
 
-        FinGroup.__init__(self, self.elements)
     cyc_logger.info('CycGroup class defined')
 
 
@@ -89,6 +91,8 @@ class CycGroupElem(FinGroupElem):
         self.display = "%s (mod %s)" %(ZnInt,group_order)
 
         FinGroupElem.__init__(self)
+
+        self.group_type = 'Cyclic'
     cyc_logger.info('CycGroupElem class defined')
 
     def __mul__(self, second):
@@ -103,4 +107,3 @@ class CycGroupElem(FinGroupElem):
         result = (self._number + second._number) % self.group_order
         cyc_logger.debug('result is %s' %(str(result)))
         return CycGroupElem(result, self.group_order)
-

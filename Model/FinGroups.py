@@ -1,16 +1,17 @@
 import logging
+from Model.Groups import Group
+from Model.Groups import GroupElem
 
 fin_group_logger = logging.getLogger('fin_group_logger')
 fin_group_logger.info('fin_group_logger created')
 
-class FinGroup:
+class FinGroup(Group):
 
     """
     WITHIN EACH SUBCLASS OF FINGROUP, THE FOLLOWING MUST BE DEFINED:
 
     Attributes:
      * .elements - a list of the elements
-     * .identity - can be found using FinGroup classmethod get_inverse
 
      Operations:
 
@@ -20,9 +21,15 @@ class FinGroup:
     def __init__(self, elements):
         fin_group_logger.info('Initiating FinGroup object')
 
-        self.elements = elements
+        Group.__init__(self)
+
+        self.type = None
 
         self.abelian = all(a * b == b * a for a in self.elements for b in self.elements)
+
+        self.elements = elements
+
+        self.identity = FinGroup.get_identity(self.elements)
 
     def __iter__(self):
         fin_group_logger.debug('Initiating FinGroup iterator')
@@ -42,7 +49,7 @@ class FinGroup:
     def get_inverse(cls, g, group):
         fin_group_logger.info('Initiating FinGroup class method get_inverse')
         for other in group.elements:
-            fin_group_logger.debug('Testing %s' % other)
+            fin_group_logger.debug('Testing %s' % str(other.display))
             if other * g == group.identity:
                 return other
 
@@ -52,20 +59,12 @@ class FinGroup:
     def get_identity(cls, elements):
         fin_group_logger.info('Initiating FinGroup class method get_identity')
         for g in elements:
-            if (cls.is_identity(g, elements)):
+            if (Group.is_identity(g)):
                 fin_group_logger.info('Identity found')
                 return g
-            else:fin_group_logger.debug('element %s is not identity' %str(element.display))
+            else:fin_group_logger.debug('element %s is not identity' %str(g.display))
+        fin_group_logger.error('No identity element found')
         raise ValueError()
-
-    @classmethod
-    def is_identity(cls, possible_id, elements) -> bool:
-        fin_group_logger.info('Initiating FinGroup class method is_identity')
-        for g in elements:
-            if not possible_id * g == g:
-                return False
-
-        return True
 
     @classmethod
     def get_elem_order(cls, elem, identity):
@@ -76,38 +75,27 @@ class FinGroup:
             count += 1
         return count
 
-class FinGroupElem():
+class FinGroupElem(GroupElem):
 
     """
     WITHIN EACH SUBCLASS OF FINGROUPELEM, THE FOLLOWING MUST BE DEFINED:
 
     Attributes:
-     * .display - a unique (within group) display of the element. Used for __eq__ & __ne__
+     * element.display - a unique (within group) display for each element. Used for __eq__ & __ne__
 
      Operations:
-     * mul - group operation
+     * mul (*) - group binary operation between elements
 
      Methods:
-     * group_identity - returns an object, group identity
+     * group_identity - returns an element object, group identity
      """
 
 
     def __init__(self):
-        self._inverse_holder = None
 
+        fin_group_logger.info('Initiating Group object')
 
-    def __eq__(self, other):
-        fin_group_logger.debug('1st element is %s, 2nd element is %s' %(str(self.display), str(other.display)))
-        assert(self.group_order == other.group_order)
-        fin_group_logger.debug('Elements are from symmetric group of group_order %d' % self.group_order)
-        return self.display == other.display
-
-    def __ne__(self, other):
-        fin_group_logger.debug('1st element is %s, 2nd element is %s' %(str(self.display), str(other.display)))
-        return not self.display == other.display
-
-    def __str__(self):
-        return str(self.display)
+        GroupElem.__init__(self)
 
     def __pow__(self, power):
         assert(isinstance(power, int))
@@ -121,14 +109,15 @@ class FinGroupElem():
             try:
                 assert(self.associated_group != None)
             except AssertionError:
-                sym_logger.error('Cannot process negative powers without associated group')
+                fin_group_logger.error('Cannot process negative powers without associated group')
                 raise TypeError
             return FinGroup.get_inverse(pow(self, -power), self.associated_group)
 
     def inverse(self, group):
+        fin_group_logger.debug('Initialising FinGroupElem.inverse method')
         try:
             assert(self.associated_group != None)
-            fin_group_logger.debug('Element has associated group')
+            fin_group_logger.debug('Element has associated group %s' %group)
         except AssertionError:
             raise AttributeError
             fin_group_logger.warning('Cannot find inverse if element has no associated group')
@@ -138,9 +127,11 @@ class FinGroupElem():
         else: return self._inverse_holder
 
     def order(self):
+        fin_group_logger.debug('Initialising FinGroup.order method')
         return FinGroup.get_elem_order(self, group_identity(self))
 
     def group_identity(self):
+        fin_group_logger.debug('Initialising FinGroupElem.group_identity method')
         try:
             assert(self.associated_group != None)
             fin_group_logger.debug('Element has associated group')
@@ -148,3 +139,19 @@ class FinGroupElem():
             raise AttributeError
             fin_group_logger.warning('Cannot find identity if element has no associated group')
         return self.associated_group.identity
+
+    def generate(self, *others):
+        fin_group_logger.info('Initialising FinGroupElem.generate method')
+        # return the group generated by this element
+        old_group = set(others) | {self}
+        fin_group_logger.debug('Generating set has size %d' % len(old_group))
+        while True:
+            new_group = old_group | set(a * b for a in old_group for b in old_group)
+            fin_group_logger.debug('New set has size %d' % len(new_group))
+            if old_group == new_group: break
+            else: old_group = new_group
+
+        generated_group = FinGroup(tuple(new_group))
+        generated_group.type = self.group_type
+
+        return generated_group
