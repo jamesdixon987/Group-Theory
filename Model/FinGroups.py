@@ -49,6 +49,10 @@ class FinGroup(Group):
     def size(self):
         return len(self.elements)
 
+    def show_elements(self):
+        for element in self.elements:
+            print(element.display)
+
     @classmethod
     def get_inverse(cls, g, group):
         fin_group_logger.info('Initiating FinGroup class method get_inverse')

@@ -23,8 +23,16 @@ class test_group(unittest.TestCase):
         group_list = [IntegerGroup()]
         for n in range(2,6):
             group_list.append(SymGroup(n))
+
+        for n in range(7, 12):
+            generated_group_creator = list(range(2,n))
+            generated_group_creator.append(1)
+            group_list.append(SymGroupElem.generate(SymGroupElem(tuple(generated_group_creator))))
+
             group_list.append(CycGroup(n))
+
         for G in group_list:
+
             elem1 = G.elements[0]
             elem2 = G.elements[1]
 
@@ -43,17 +51,19 @@ class test_group(unittest.TestCase):
     def test_finite_groups(self):
         group_list = []
         # Please note that groups must have size at least 5 to be added to this list.
-        for n in range(3,6):
+        for n in range(3,8):
             group_list.append(SymGroup(n))
-
         for n in range(7, 12):
-            generated_group_creator = list(range(2,n))
-            generated_group_creator.append(1)
-            group_list.append(SymGroupElem.generate(SymGroupElem(tuple(generated_group_creator))))
+            generated_group_creator1 = list(range(2,n))
+            generated_group_creator1.append(1)
+            group_list.append(SymGroupElem.generate(SymGroupElem(tuple(generated_group_creator1))))
 
             group_list.append(CycGroup(n))
 
+        group_list.append(SymGroupElem.generate(
+            SymGroupElem((2,3,4,5,1)),SymGroupElem((2,1,4,3,5))))
         for G in group_list:
+
             self.assertTrue(isinstance(G.elements, tuple))
             fixed_element = G.elements[1]
 
