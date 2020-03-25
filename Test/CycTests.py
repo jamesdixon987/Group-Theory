@@ -14,6 +14,7 @@ class test_group(unittest.TestCase):
             self.assertEqual(len(C.elements), n)
             self.assertTrue(isinstance(C.elements, tuple))
             self.assertEqual(C.identity, CycGroupElem(0, n))
+            self.assertEqual(C.elements[0].associated_group, C)
 
             iter_group = iter(C)
             count = 0
@@ -24,7 +25,7 @@ class test_group(unittest.TestCase):
 
     def test_cyc_group_elem(self):
         C = CycGroup(4)
-        element = CycGroupElem(2, 4)
+        fixed_element = CycGroupElem(2, 4)
         self.assertTrue(C.identity == CycGroupElem(0, 4))
         for n in [0, 1, 2, 3]:
             elem = CycGroupElem(n, 4)
@@ -32,6 +33,7 @@ class test_group(unittest.TestCase):
             self.assertIn(elem, C.elements)
             self.assertEqual(elem.group_order, C.order)
             self.assertEqual(elem.display, '%d (mod 4)' %n)
+            self.assertEqual(C.operation(elem, fixed_element), elem * fixed_element)
             self.assertEqual(CycGroupElem.inverse(elem, C) * elem, C.identity)
             self.assertTrue(elem == elem)
             self.assertFalse(elem != elem)

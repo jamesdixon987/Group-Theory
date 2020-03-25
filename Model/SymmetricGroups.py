@@ -24,9 +24,7 @@ class SymGroup(FinGroup):
         sym_logger.debug('order is %d' % order)
 
         element_list = tuple(itertools.permutations(range(1, order + 1)))
-        self.elements = tuple(SymGroupElem(g) for g in element_list)
-        for g in self.elements:
-            g.associated_group = self
+        self.elements = tuple(SymGroupElem(g, self) for g in element_list)
         sym_logger.debug('self.elements created')
 
         sym_logger.info('Symmetric group of order %d created' % order)
@@ -40,7 +38,7 @@ class SymGroup(FinGroup):
 class SymGroupElem(FinGroupElem):
     sym_logger.info('Initiating SymGroupElem class')
 
-    def __init__(self, Sn_tuple):
+    def __init__(self, Sn_tuple, associated_group = None):
         assert(isinstance(Sn_tuple,tuple))
 
         FinGroupElem.__init__(self)
@@ -75,6 +73,8 @@ class SymGroupElem(FinGroupElem):
 
         self.group_type = 'Symmetric'
 
+        self.associated_group = associated_group
+
         self.group_order = len(Sn_tuple)
 
         test_unique_list = []
@@ -85,8 +85,6 @@ class SymGroupElem(FinGroupElem):
             sym_logger.debug('test list is %s' % test_unique_list)
 
         self.tuple_rep = Sn_tuple
-
-        self.associated_group = None
 
         self.display = SymGroupElem.get_cycle_representation(self)
         sym_logger.debug('element cycle representation is %s' %str(self.display))

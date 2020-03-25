@@ -25,9 +25,7 @@ class CycGroup(FinGroup):
 
         element_list = tuple(range(order))
         cyc_logger.debug('element list created')
-        self.elements = tuple(CycGroupElem(g, self.order) for g in element_list)
-        for g in self.elements:
-            g.associated_group = self
+        self.elements = tuple(CycGroupElem(g, self.order, self) for g in element_list)
         cyc_logger.debug('self.elements created')
 
         FinGroup.__init__(self, self.elements)
@@ -70,7 +68,7 @@ class CycGroupElem(FinGroupElem):
          
         """
 
-    def __init__(self, ZnInt, group_order):
+    def __init__(self, ZnInt, group_order, associated_group = None):
         cyc_logger.debug('Creating instance of CycGroupElem')
         assert(isinstance(ZnInt,int))
         assert(ZnInt >= 0)
@@ -84,7 +82,7 @@ class CycGroupElem(FinGroupElem):
 
         self.group_order = group_order
         cyc_logger.debug('Group is order %d' %group_order)
-        self.associated_group = None
+        self.associated_group = associated_group
         cyc_logger.debug('No group initially associated')
         self._number = ZnInt
 

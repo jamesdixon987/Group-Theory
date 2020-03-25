@@ -15,6 +15,7 @@ class test_group(unittest.TestCase):
             self.assertEqual(len(S.elements), factorial(n))
             self.assertTrue(isinstance(S.elements, tuple))
             self.assertEqual(S.identity, SymGroupElem(tuple(range(1, n + 1))))
+            self.assertEqual(S.elements[0].associated_group, S)
 
             iter_group = iter(S)
             count = 0
