@@ -35,7 +35,7 @@ class test_group(unittest.TestCase):
             self.assertIn(elem, S.elements)
             self.assertEqual(elem.group_order, S.order)
             self.assertEqual(n, elem.tuple_rep)
-            self.assertEqual(S.operation(elem * fixed_element), elem * fixed_element)
+            self.assertEqual(S.operation(elem, fixed_element), elem * fixed_element)
             self.assertEqual(SymGroupElem.inverse(elem, S) * elem, S.identity)
             self.assertTrue(elem == elem)
             self.assertFalse(elem != elem)
