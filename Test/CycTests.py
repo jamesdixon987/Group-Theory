@@ -33,9 +33,6 @@ class test_group(unittest.TestCase):
             self.assertIn(elem, C.elements)
             self.assertEqual(elem.group_order, C.order)
             self.assertEqual(elem.display, '%d (mod 4)' %n)
-            self.assertEqual(C.operation(elem, fixed_element), elem * fixed_element)
-            self.assertEqual(CycGroupElem.inverse(elem, C) * elem, C.identity)
-            self.assertTrue(elem == elem)
-            self.assertFalse(elem != elem)
-            self.assertTrue(elem**2 == elem * elem)
-            self.assertEqual(elem**-2,FinGroup.get_inverse(elem**2, C))
+
+
+

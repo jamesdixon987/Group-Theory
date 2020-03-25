@@ -1,5 +1,11 @@
 import unittest
 
+import logging
+group_test_logger = logging.getLogger('group_test_logger')
+logging.basicConfig(level=logging.WARNING)
+group_test_logger.info('group_test_logger created')
+
+
 from Model.Groups import Group
 from Model.Groups import GroupElem
 from Model.SymmetricGroups import SymGroup
@@ -39,16 +45,37 @@ class test_group(unittest.TestCase):
         # Please note that groups must have size at least 5 to be added to this list.
         for n in range(3,6):
             group_list.append(SymGroup(n))
-        for n in range(6, 12):
+
+        for n in range(7, 12):
+            generated_group_creator = list(range(2,n))
+            generated_group_creator.append(1)
+            group_list.append(SymGroupElem.generate(SymGroupElem(tuple(generated_group_creator))))
+
             group_list.append(CycGroup(n))
+
         for G in group_list:
             self.assertTrue(isinstance(G.elements, tuple))
+            fixed_element = G.elements[1]
+
             iter_group = iter(G)
             count = 0
             while count < 5:
-                a = next(iter_group)
-                self.assertTrue(FinGroup.get_inverse(a, G) * a == G.identity)
+                elem = next(iter_group)
+
+                self.assertIn(elem, G.elements)
+
+                self.assertTrue(FinGroup.get_inverse(elem, G) * elem == G.identity)
+                self.assertEqual(G.operation(elem, fixed_element), elem * fixed_element)
+
+                self.assertTrue(elem == elem)
+                self.assertFalse(elem != elem)
+
+                self.assertTrue(elem**2 == elem * elem)
+                self.assertEqual(elem**-2,FinGroup.get_inverse(elem**2, G))
+
                 count += 1
+
+
 
 if __name__ == "__main__":
     unittest.main()

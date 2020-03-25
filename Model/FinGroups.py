@@ -18,7 +18,7 @@ class FinGroup(Group):
      Methods:
      """
 
-    def __init__(self, elements):
+    def __init__(self, elements, associated_group = None):
         fin_group_logger.info('Initiating FinGroup object')
 
         Group.__init__(self)
@@ -26,6 +26,8 @@ class FinGroup(Group):
         self.type = None
 
         self.Finite = True
+
+        self.associated_group = associated_group
 
         self.abelian = all(a * b == b * a for a in self.elements for b in self.elements)
 
@@ -95,7 +97,7 @@ class FinGroupElem(GroupElem):
 
     def __init__(self):
 
-        fin_group_logger.info('Initiating Group object')
+        fin_group_logger.info('Initiating FinGroup object')
 
         GroupElem.__init__(self)
 
@@ -142,15 +144,20 @@ class FinGroupElem(GroupElem):
             fin_group_logger.warning('Cannot find identity if element has no associated group')
         return self.associated_group.identity
 
-    def generate(self, *others):
+    @classmethod
+    def generate(self, first, *others):
         # Not that this returns the element tuple for a new group. It does not intialise the group.
-        fin_group_logger.info('Initialising FinGroupElem.generate method')
-        old_group = set(others) | {self}
+        fin_group_logger.info('Initialising Helper.generate method')
+        old_group = {first} | set(others)
         fin_group_logger.debug('Generating set has size %d' % len(old_group))
         while True:
             new_group = old_group | set(a * b for a in old_group for b in old_group)
             fin_group_logger.debug('New set has size %d' % len(new_group))
             if old_group == new_group: break
             else: old_group = new_group
+        fin_group_logger.debug('New group has size %d' % len(new_group))
 
-        return tuple(new_group)
+        generated_group = FinGroup(tuple(new_group))
+        for element in generated_group.elements:
+            element.associated_group = generated_group
+        return generated_group

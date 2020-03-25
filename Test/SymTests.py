@@ -33,12 +33,9 @@ class test_group(unittest.TestCase):
             self.assertEqual(elem.group_type, 'Symmetric')
 
             self.assertEqual(n, elem.tuple_rep)
-            self.assertEqual(S.operation(elem, fixed_element), elem * fixed_element)
-            self.assertEqual(SymGroupElem.inverse(elem, S) * elem, S.identity)
-            self.assertTrue(elem == elem)
-            self.assertFalse(elem != elem)
-            self.assertTrue(elem**2 == elem * elem)
-            self.assertEqual(elem**-2,FinGroup.get_inverse(elem**2, S))
+
+
+
 
 
 if __name__ == "__main__":

@@ -143,6 +143,8 @@ class SymGroupElem(FinGroupElem):
     sym_logger.info('SymGroup class defined')
 
 
+
+
 dih_logger = logging.getLogger('dih_logger')
 dih_logger.info('dih_logger created')
 
@@ -176,4 +178,5 @@ class DiGroup(FinGroup):
 
         self.type = 'Dihedral'
     dih_logger.info('Dihedral class defined')
+
 
