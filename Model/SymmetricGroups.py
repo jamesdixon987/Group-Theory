@@ -167,9 +167,21 @@ class DiGroup(FinGroup):
         dih_logger.debug('order is %d' % order)
 
         if order == 2:
-            self.elements = FinGroupElem.generate(SymGroupElem((2,1)))
+            self.elements = FinGroupElem.generate(SymGroupElem((2,1))).elements
         else:
-            raise NotImplementedError
+            generator1 = list(range(2,order+1))
+            generator1.append(1)
+            generator1 = tuple(generator1)
+
+            generator2 = [1]
+            for x in range(order,1,-1):
+                generator2.append(x)
+            generator2 = tuple(generator2)
+
+            self.elements = FinGroupElem.generate(SymGroupElem(generator1),
+                                                  SymGroupElem(generator2)).elements
+
+
         dih_logger.debug('self.elements created')
 
         dih_logger.info('Dihedral group of order %d created' % order)
