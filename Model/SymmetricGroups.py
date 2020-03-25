@@ -122,9 +122,6 @@ class SymGroupElem(FinGroupElem):
             if num in done:
                 sym_logger.debug('%d in done' %num)
                 pass
-            elif self.tuple_rep[num - 1] == num:
-                sym_logger.debug('%d not in a cycle' %num)
-                done.append(num)
             else:
                 current_num = self.tuple_rep[num - 1]
                 sym_logger.debug('current_num is %d' %current_num)
@@ -179,3 +176,4 @@ class DiGroup(FinGroup):
 
         self.type = 'Dihedral'
     dih_logger.info('Dihedral class defined')
+

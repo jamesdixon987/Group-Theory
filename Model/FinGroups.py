@@ -25,6 +25,8 @@ class FinGroup(Group):
 
         self.type = None
 
+        self.Finite = True
+
         self.abelian = all(a * b == b * a for a in self.elements for b in self.elements)
 
         self.elements = elements
