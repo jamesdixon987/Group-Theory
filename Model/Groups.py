@@ -23,6 +23,10 @@ class Group:
     def __hash__(self):
         return hash(self.elements)
 
+    def operation(self, first_element, second_element):
+        assert(first_element in self.elements and second_element in self.elements)
+        return first_element * second_element
+
     @classmethod
     def is_identity(cls, possible_id) -> bool:
         group_logger.info('Initiating FinGroup class method is_identity')
