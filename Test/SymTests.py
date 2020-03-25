@@ -3,6 +3,7 @@ import unittest
 from math import factorial
 from Model.SymmetricGroups import SymGroup
 from Model.SymmetricGroups import SymGroupElem
+from Model.SymmetricGroups import DiGroup
 from Model.FinGroups import FinGroup
 from Model.FinGroups import FinGroupElem
 
@@ -34,8 +35,14 @@ class test_group(unittest.TestCase):
 
             self.assertEqual(n, elem.tuple_rep)
 
-
-
+    def test_dih_group(self):
+        for n in range(3, 12):
+            D = DiGroup(n)
+            self.assertEqual(D.order, n)
+            self.assertEqual(D.size(), 2 * n)
+            self.assertEqual(len(D.elements), 2 * n)
+            self.assertEqual(D.identity, SymGroupElem(tuple(range(1, n + 1))))
+            self.assertEqual(D.elements[2].group_type, 'Dihedral')
 
 
 if __name__ == "__main__":

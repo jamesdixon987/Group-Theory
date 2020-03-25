@@ -180,7 +180,9 @@ class DiGroup(FinGroup):
 
             self.elements = FinGroupElem.generate(SymGroupElem(generator1),
                                                   SymGroupElem(generator2)).elements
-
+        for element in self.elements:
+            element.associated_group = self
+            element.group_type = 'Dihedral'
 
         dih_logger.debug('self.elements created')
 
@@ -190,5 +192,6 @@ class DiGroup(FinGroup):
 
         self.type = 'Dihedral'
     dih_logger.info('Dihedral class defined')
+
 
 

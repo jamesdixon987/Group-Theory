@@ -10,6 +10,7 @@ from Model.Groups import Group
 from Model.Groups import GroupElem
 from Model.SymmetricGroups import SymGroup
 from Model.SymmetricGroups import SymGroupElem
+from Model.SymmetricGroups import DiGroup
 from Model.CyclicGroups import CycGroup
 from Model.CyclicGroups import CycGroupElem
 from Model.FinGroups import FinGroup
@@ -30,6 +31,7 @@ class test_group(unittest.TestCase):
             group_list.append(SymGroupElem.generate(SymGroupElem(tuple(generated_group_creator))))
 
             group_list.append(CycGroup(n))
+            group_list.append(DiGroup(n))
 
         for G in group_list:
 
@@ -59,6 +61,7 @@ class test_group(unittest.TestCase):
             group_list.append(SymGroupElem.generate(SymGroupElem(tuple(generated_group_creator1))))
 
             group_list.append(CycGroup(n))
+            group_list.append(DiGroup(n))
 
         group_list.append(SymGroupElem.generate(
             SymGroupElem((2,3,4,5,1)),SymGroupElem((2,1,4,3,5))))

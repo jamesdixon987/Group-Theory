@@ -144,8 +144,8 @@ class FinGroupElem(GroupElem):
             assert(self.associated_group != None)
             fin_group_logger.debug('Element has associated group')
         except AssertionError:
-            raise AttributeError
             fin_group_logger.warning('Cannot find identity if element has no associated group')
+            raise AttributeError
         return self.associated_group.identity
 
     @classmethod
