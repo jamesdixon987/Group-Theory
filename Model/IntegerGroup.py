@@ -61,7 +61,7 @@ class IntegerGroupElem(GroupElem):
 
         Group.__init__(self)
 
-        self.display = '%d in Z' %new_integer
+        self.display = '%d in %s' %(new_integer, u'\u2124')
 
         self.value = new_integer
 
@@ -79,6 +79,5 @@ class IntegerGroupElem(GroupElem):
                 self.associated_group.initialise_integer(result)
         else: result = IntegerGroupElem(self.value + other.value)
         return result
-
 
 
