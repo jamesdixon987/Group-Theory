@@ -6,15 +6,12 @@ logging.basicConfig(level=logging.WARNING)
 group_test_logger.info('group_test_logger created')
 
 
-from Model.Groups import Group
-from Model.Groups import GroupElem
 from Model.SymmetricGroups import SymGroup
 from Model.SymmetricGroups import SymGroupElem
 from Model.SymmetricGroups import DiGroup
 from Model.CyclicGroups import CycGroup
 from Model.CyclicGroups import CycGroupElem
 from Model.FinGroups import FinGroup
-from Model.FinGroups import FinGroupElem
 from Model.IntegerGroup import IntegerGroup
 from Model.IntegerGroup import IntegerGroupElem
 

@@ -1,6 +1,5 @@
 import logging
 import itertools
-from Model.Groups import Group
 from Model.FinGroups import FinGroup
 from Model.FinGroups import FinGroupElem
 
@@ -192,6 +191,5 @@ class DiGroup(FinGroup):
 
         self.type = 'Dihedral'
     dih_logger.info('Dihedral class defined')
-
 
 

@@ -4,9 +4,6 @@ from math import factorial
 from Model.SymmetricGroups import SymGroup
 from Model.SymmetricGroups import SymGroupElem
 from Model.SymmetricGroups import DiGroup
-from Model.FinGroups import FinGroup
-from Model.FinGroups import FinGroupElem
-
 
 class test_group(unittest.TestCase):
     def test_sym_group(self):
