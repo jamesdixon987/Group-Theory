@@ -4,7 +4,6 @@ from Model.FinGroups import FinGroup
 from Model.FinGroups import FinGroupElem
 
 sym_logger = logging.getLogger('sym_logger')
-logging.basicConfig(level=logging.WARNING)
 sym_logger.info('sym_logger created')
 
 
@@ -32,6 +31,13 @@ class SymGroup(FinGroup):
         FinGroup.__init__(self, self.elements)
 
         self.type = 'Symmetric'
+
+        generator1 = list(range(2, order+1))
+        generator1.append(1)
+        generator1 = SymGroupElem(tuple(generator1), self)
+        generator2 = SymGroupElem((2, 1), self)
+        self.generating_set = (generator1, generator2)
+
     sym_logger.info('SymGroup class defined')
 
 
@@ -75,7 +81,9 @@ class SymGroupElem(FinGroupElem):
 
         self.associated_group = associated_group
 
-        self.group_order = len(Sn_tuple)
+        if self.associated_group is None:
+            self.group_order = len(Sn_tuple)
+        else: self.group_order = self.associated_group.order
 
         test_unique_list = []
         for k in Sn_tuple:

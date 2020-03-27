@@ -35,6 +35,8 @@ class FinGroup(Group):
 
         self.identity = FinGroup.get_identity(self.elements)
 
+        self.generating_set = None
+
     def __iter__(self):
         fin_group_logger.debug('Initiating FinGroup iterator')
         # Iterate over the elements of the group, returning the identity first
@@ -134,10 +136,16 @@ class FinGroupElem(GroupElem):
 
     @classmethod
     def generate(self, first, *others):
-        # Not that this returns the element tuple for a new group. It does not intialise the group.
         fin_group_logger.info('Initialising Helper.generate method')
-        old_group = {first} | set(others)
+        if isinstance(first, tuple):
+            fin_group_logger.debug('Generating using tuple')
+            old_group = set(first)
+        else:
+            old_group = {first} | set(others)
+            fin_group_logger.debug('Generating using elements')
+        generating_set = tuple(old_group)
         fin_group_logger.debug('Generating set has size %d' % len(old_group))
+        fin_group_logger.debug('Generating set is %s' % str(old_group))
         while True:
             new_group = old_group | set(a * b for a in old_group for b in old_group)
             fin_group_logger.debug('New set has size %d' % len(new_group))
@@ -146,6 +154,7 @@ class FinGroupElem(GroupElem):
         fin_group_logger.debug('New group has size %d' % len(new_group))
 
         generated_group = FinGroup(tuple(new_group))
+        generated_group.generating_set = generating_set
         for element in generated_group.elements:
             element.associated_group = generated_group
         return generated_group

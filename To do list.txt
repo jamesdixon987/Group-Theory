@@ -1,0 +1,16 @@
+FUNCTIONALITY NEEDING FIXING:
+
+* Generating set for symmetric groups contains different instances of objects from the element lost. Perhaps a 'return_element' function that will find an element object corresponding to a specific function?
+
+
+
+NEXT STEPS:
+
+* Normal Subgroups
+* Product of two groups to make new group
+* Would like to find another infinite group to implement (one that is not isomorphic to Z) - Z is a bit lonely. Not sure which one yet.
+
+PERHAPS IN THE FUTURE:
+* Homomorphisms
+* is_simple() function for finite groups
+

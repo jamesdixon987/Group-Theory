@@ -3,7 +3,6 @@ from Model.Groups import Group
 from Model.Groups import GroupElem
 
 integer_group_logger = logging.getLogger('integer_group_logger')
-logging.basicConfig(level=logging.WARNING)
 integer_group_logger.info('integer_group_logger created')
 
 class IntegerGroup(Group):

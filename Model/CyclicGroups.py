@@ -4,7 +4,6 @@ from Model.FinGroups import FinGroup
 from Model.FinGroups import FinGroupElem
 
 cyc_logger = logging.getLogger('cyc_logger')
-logging.basicConfig(level=logging.WARNING)
 cyc_logger.info('Cyc logger created')
 
 class CycGroup(FinGroup):
