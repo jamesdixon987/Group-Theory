@@ -105,32 +105,16 @@ class FinGroupElem(GroupElem):
 
         GroupElem.__init__(self)
 
-    def __pow__(self, power):
-        assert(isinstance(power, int))
-        if power == 0:
-            return group_identity(self)
-        elif power == 1:
-            return self
-        elif power > 1:
-            return self * pow(self, power - 1)
-        else:
-            try:
-                assert(self.associated_group != None)
-            except AssertionError:
-                fin_group_logger.error('Cannot process negative powers without associated group')
-                raise TypeError
-            return FinGroup.get_inverse(pow(self, -power), self.associated_group)
-
-    def inverse(self, group):
+    def inverse(self):
         fin_group_logger.debug('Initialising FinGroupElem.inverse method')
         try:
-            assert(self.associated_group != None)
-            fin_group_logger.debug('Element has associated group %s' %group)
+            assert(self.associated_group is not None)
+            fin_group_logger.debug('Element has associated group %s' %self.associated_group)
         except AssertionError:
-            raise AttributeError
             fin_group_logger.warning('Cannot find inverse if element has no associated group')
-        if self._inverse_holder == None:
-            self._inverse_holder = FinGroup.get_inverse(self, group)
+            raise AttributeError
+        if self._inverse_holder is None:
+            self._inverse_holder = FinGroup.get_inverse(self, self.associated_group)
             return self._inverse_holder
         else: return self._inverse_holder
 
@@ -141,7 +125,7 @@ class FinGroupElem(GroupElem):
     def group_identity(self):
         fin_group_logger.debug('Initialising FinGroupElem.group_identity method')
         try:
-            assert(self.associated_group != None)
+            assert(self.associated_group is not None)
             fin_group_logger.debug('Element has associated group')
         except AssertionError:
             fin_group_logger.warning('Cannot find identity if element has no associated group')

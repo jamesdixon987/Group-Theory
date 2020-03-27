@@ -12,6 +12,7 @@ class test_group(unittest.TestCase):
             self.assertEqual(S.order, n)
             self.assertEqual(len(S.elements), factorial(n))
             self.assertEqual(S.identity, SymGroupElem(tuple(range(1, n + 1))))
+            self.assertTrue(S.is_identity(S.identity))
 
     def test_sym_group_elem(self):
         S = SymGroup(4)

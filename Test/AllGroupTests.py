@@ -81,6 +81,7 @@ class test_group(unittest.TestCase):
 
                 self.assertTrue(elem**2 == elem * elem)
                 self.assertEqual(elem**-2,FinGroup.get_inverse(elem**2, G))
+                self.assertTrue(G.is_inverse(elem, elem.inverse()))
 
                 count += 1
 

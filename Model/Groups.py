@@ -36,6 +36,13 @@ class Group:
             return True
         else: return False
 
+    @classmethod
+    def is_inverse(cls, first_elem, second_elem) -> bool:
+        assert (isinstance(first_elem, GroupElem))
+        assert (isinstance(second_elem, GroupElem))
+        group_logger.info('Initiating FinGroup class method is_inverse')
+        return cls.is_identity(first_elem * second_elem)
+
 class GroupElem:
 
     """
@@ -65,6 +72,22 @@ class GroupElem:
     def __ne__(self, other):
         group_logger.debug('1st element is %s, 2nd element is %s' %(str(self.display), str(other.display)))
         return not self.display == other.display
+
+    def __pow__(self, power):
+        assert(isinstance(power, int))
+        if power == 0:
+            return group_identity(self)
+        elif power == 1:
+            return self
+        elif power > 1:
+            return self * pow(self, power - 1)
+        else:
+            try:
+                assert(self.associated_group != None)
+            except AssertionError:
+                fin_group_logger.error('Cannot process negative powers without associated group')
+                raise TypeError
+            return FinGroup.get_inverse(pow(self, -power), self.associated_group)
 
     def __str__(self):
         return str(self.display)
