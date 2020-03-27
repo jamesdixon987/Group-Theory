@@ -76,6 +76,11 @@ class GroupElem:
     def __pow__(self, power):
         assert(isinstance(power, int))
         if power == 0:
+            try:
+                assert(self.associated_group != None)
+            except AssertionError:
+                group_logger.error('Cannot process non-positive powers without associated group')
+                raise TypeError
             return group_identity(self)
         elif power == 1:
             return self
@@ -85,9 +90,9 @@ class GroupElem:
             try:
                 assert(self.associated_group != None)
             except AssertionError:
-                fin_group_logger.error('Cannot process negative powers without associated group')
+                group_logger.error('Cannot process non-positive powers without associated group')
                 raise TypeError
-            return FinGroup.get_inverse(pow(self, -power), self.associated_group)
+            return (pow(self, -power).inverse())
 
     def __str__(self):
         return str(self.display)

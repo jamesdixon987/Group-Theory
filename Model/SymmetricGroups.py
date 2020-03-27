@@ -32,10 +32,13 @@ class SymGroup(FinGroup):
 
         self.type = 'Symmetric'
 
-        generator1 = list(range(2, order+1))
+        generator1 = list(range(2, order + 1))
         generator1.append(1)
-        generator1 = SymGroupElem(tuple(generator1), self)
-        generator2 = SymGroupElem((2, 1), self)
+        generator1 = SymGroupElem(tuple(generator1), associated_group = self)
+        generator2 = [2, 1]
+        for x in range(3, order + 1):
+            generator2.append(x)
+        generator2 = SymGroupElem(tuple(generator2), associated_group = self)
         self.generating_set = (generator1, generator2)
 
     sym_logger.info('SymGroup class defined')
@@ -123,6 +126,8 @@ class SymGroupElem(FinGroupElem):
     def get_cycle_representation(cls, self):
         sym_logger.debug('Initialising get_cycle_representation method')
         num_list = tuple(range(1, self.group_order + 1))
+        sym_logger.debug('num_list is %s' % str(num_list))
+        sym_logger.debug('tuple is %s' % str(self.tuple_rep))
         done = []
         cycles = []
         for num in num_list:
