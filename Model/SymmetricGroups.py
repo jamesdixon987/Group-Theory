@@ -7,11 +7,12 @@ sym_logger = logging.getLogger('sym_logger')
 logging.basicConfig(level=logging.WARNING)
 sym_logger.info('sym_logger created')
 
+
 class SymGroup(FinGroup):
     sym_logger.info('Initiating SymGroup class')
 
     def __init__(self, order):
-        assert(isinstance(order,int) and order > 1)
+        assert(isinstance(order, int) and order > 1)
 
         """
         Attributes:
@@ -38,7 +39,7 @@ class SymGroupElem(FinGroupElem):
     sym_logger.info('Initiating SymGroupElem class')
 
     def __init__(self, Sn_tuple, associated_group = None):
-        assert(isinstance(Sn_tuple,tuple))
+        assert(isinstance(Sn_tuple, tuple))
 
         FinGroupElem.__init__(self)
 
@@ -86,17 +87,17 @@ class SymGroupElem(FinGroupElem):
         self.tuple_rep = Sn_tuple
 
         self.display = SymGroupElem.get_cycle_representation(self)
-        sym_logger.debug('element cycle representation is %s' %str(self.display))
+        sym_logger.debug('element cycle representation is %s' % str(self.display))
 
         sym_logger.debug('Symmetric group element {} defined'.format(self.display))
 
     def __mul__(self, second):
-        sym_logger.debug('1st element is %s, 2nd element is %s' %(str(self.display), str(second.display)))
+        sym_logger.debug('1st element is %s, 2nd element is %s' % (str(self.display), str(second.display)))
         assert(isinstance(second, SymGroupElem))
         assert(self.group_order == second.group_order)
         sym_logger.debug('Elements are from symmetric group of group_order %d' % self.group_order)
         result = tuple(second.tuple_rep[j - 1] for j in self.tuple_rep)
-        sym_logger.debug('result is %s' %(str(result)))
+        sym_logger.debug('result is %s' % (str(result)))
         return SymGroupElem(result)
 
     def __call__(self, value):
@@ -107,45 +108,44 @@ class SymGroupElem(FinGroupElem):
         result = []
         for g in self.display:
             result.append(len(g))
-        sym_logger.debug('element cycle type is %s' %str(result))
+        sym_logger.debug('element cycle type is %s' % str(result))
         return tuple(result)
 
     @classmethod
     def get_cycle_representation(cls, self):
         sym_logger.debug('Initialising get_cycle_representation method')
-        num_list = tuple(range(1,self.group_order + 1))
+        num_list = tuple(range(1, self.group_order + 1))
         done = []
         cycles = []
         for num in num_list:
-            sym_logger.debug('next num is %d' %num)
+            sym_logger.debug('next num is %d' % num)
             if num in done:
-                sym_logger.debug('%d in done' %num)
+                sym_logger.debug('%d in done' % num)
                 pass
             else:
                 current_num = self.tuple_rep[num - 1]
-                sym_logger.debug('current_num is %d' %current_num)
+                sym_logger.debug('current_num is %d' % current_num)
                 cycle = [num]
                 while current_num != num:
                     done.append(current_num)
                     cycle.append(current_num)
                     current_num = self.tuple_rep[current_num - 1]
                 done.append(num)
-                sym_logger.debug('cycle is %s' %str(cycle))
+                sym_logger.debug('cycle is %s' % str(cycle))
                 cycles.append(tuple(cycle))
         if len(cycles) == 0:
             sym_logger.debug('element is identity')
             return ()
         else:
-            sym_logger.debug('element cycle representation is %s' %str(cycles))
+            sym_logger.debug('element cycle representation is %s' % str(cycles))
             return tuple(cycles)
 
     sym_logger.info('SymGroup class defined')
 
 
-
-
 dih_logger = logging.getLogger('dih_logger')
 dih_logger.info('dih_logger created')
+
 
 class DiGroup(FinGroup):
     dih_logger.info('Initiating DiGroup class')
@@ -153,7 +153,7 @@ class DiGroup(FinGroup):
     def __init__(self, order):
         dih_logger.info('Initiating DiGroup object')
         dih_logger.warning('Digroup(n) represents the symmetries of an n-sided polygon')
-        assert(isinstance(order,int) and order > 1)
+        assert(isinstance(order, int) and order > 1)
 
         """
         Attributes:
@@ -166,14 +166,14 @@ class DiGroup(FinGroup):
         dih_logger.debug('order is %d' % order)
 
         if order == 2:
-            self.elements = FinGroupElem.generate(SymGroupElem((2,1))).elements
+            self.elements = FinGroupElem.generate(SymGroupElem((2, 1))).elements
         else:
-            generator1 = list(range(2,order+1))
+            generator1 = list(range(2, order+1))
             generator1.append(1)
             generator1 = tuple(generator1)
 
             generator2 = [1]
-            for x in range(order,1,-1):
+            for x in range(order, 1,-1):
                 generator2.append(x)
             generator2 = tuple(generator2)
 
@@ -191,5 +191,3 @@ class DiGroup(FinGroup):
 
         self.type = 'Dihedral'
     dih_logger.info('Dihedral class defined')
-
-

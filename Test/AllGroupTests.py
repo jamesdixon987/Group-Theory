@@ -46,7 +46,6 @@ class test_group(unittest.TestCase):
             self.assertNotEqual(elem1.group_type, None)
             self.assertEqual(elem1.group_type, elem2.group_type)
 
-
     def test_finite_groups(self):
         group_list = []
         # Please note that groups must have size at least 5 to be added to this list.
