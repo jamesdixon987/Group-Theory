@@ -29,7 +29,7 @@ class CycGroup(FinGroup):
 
         FinGroup.__init__(self, self.elements)
 
-        self.type = 'Cyclic'
+        self.type = 'Cyclic order %d' % order
 
         cyc_logger.info('Symmetric group of order %d created' % order)
 
@@ -86,6 +86,7 @@ class CycGroupElem(FinGroupElem):
         self._number = ZnInt
 
         self.display = "%s (mod %s)" %(ZnInt,group_order)
+        self._element_holder = ZnInt
 
         FinGroupElem.__init__(self)
 
@@ -103,4 +104,8 @@ class CycGroupElem(FinGroupElem):
         cyc_logger.debug('Elements are from cyclic group of group_order %d' % self.group_order)
         result = (self._number + second._number) % self.group_order
         cyc_logger.debug('result is %s' %(str(result)))
-        return CycGroupElem(result, self.group_order)
+        if self.associated_group is None:
+            return CycGroupElem(result, self.group_order)
+        else:
+            return self.associated_group(result)
+

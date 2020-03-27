@@ -48,6 +48,10 @@ class FinGroup(Group):
     def __contains__(self, item):
         return item in self.elements
 
+    def __call__(self, elem):
+        result = [item for item in self.elements if item._element_holder == elem]
+        return result[0]
+
     def size(self):
         return len(self.elements)
 
@@ -91,7 +95,8 @@ class FinGroupElem(GroupElem):
     WITHIN EACH SUBCLASS OF FINGROUPELEM, THE FOLLOWING MUST BE DEFINED:
 
     Attributes:
-     * element.display - a unique (within group) display for each element. Used for __eq__ & __ne__
+     * element.display - a unique (within group) 'nice' display for each element. Used for __eq__ & __ne__
+     * element._element_holder - a unique display used for searching for elements in group (e.g. in __mul__)
 
      Operations:
      * mul (*) - group binary operation between elements
@@ -113,7 +118,7 @@ class FinGroupElem(GroupElem):
             assert(self.associated_group is not None)
             fin_group_logger.debug('Element has associated group %s' %self.associated_group)
         except AssertionError:
-            fin_group_logger.warning('Cannot find inverse if element has no associated group')
+            fin_group_logger.error('Cannot find inverse if element has no associated group')
             raise AttributeError
         if self._inverse_holder is None:
             self._inverse_holder = FinGroup.get_inverse(self, self.associated_group)

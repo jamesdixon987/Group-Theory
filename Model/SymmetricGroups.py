@@ -95,7 +95,7 @@ class SymGroupElem(FinGroupElem):
             test_unique_list.append(k)
             sym_logger.debug('test list is %s' % test_unique_list)
 
-        self.tuple_rep = Sn_tuple
+        self._element_holder = Sn_tuple
 
         self.display = SymGroupElem.get_cycle_representation(self)
         sym_logger.debug('element cycle representation is %s' % str(self.display))
@@ -107,13 +107,16 @@ class SymGroupElem(FinGroupElem):
         assert(isinstance(second, SymGroupElem))
         assert(self.group_order == second.group_order)
         sym_logger.debug('Elements are from symmetric group of group_order %d' % self.group_order)
-        result = tuple(second.tuple_rep[j - 1] for j in self.tuple_rep)
+        result = tuple(second._element_holder[j - 1] for j in self._element_holder)
         sym_logger.debug('result is %s' % (str(result)))
-        return SymGroupElem(result)
+        if self.associated_group is None:
+            return SymGroupElem(result)
+        else:
+            return self.associated_group(result)
 
     def __call__(self, value):
-        assert(value in self.tuple_rep)
-        return self.tuple_rep[value - 1]
+        assert(value in self._element_holder)
+        return self._element_holder[value - 1]
 
     def cycle_type(self):
         result = []
@@ -127,7 +130,7 @@ class SymGroupElem(FinGroupElem):
         sym_logger.debug('Initialising get_cycle_representation method')
         num_list = tuple(range(1, self.group_order + 1))
         sym_logger.debug('num_list is %s' % str(num_list))
-        sym_logger.debug('tuple is %s' % str(self.tuple_rep))
+        sym_logger.debug('tuple is %s' % str(self._element_holder))
         done = []
         cycles = []
         for num in num_list:
@@ -136,13 +139,13 @@ class SymGroupElem(FinGroupElem):
                 sym_logger.debug('%d in done' % num)
                 pass
             else:
-                current_num = self.tuple_rep[num - 1]
+                current_num = self._element_holder[num - 1]
                 sym_logger.debug('current_num is %d' % current_num)
                 cycle = [num]
                 while current_num != num:
                     done.append(current_num)
                     cycle.append(current_num)
-                    current_num = self.tuple_rep[current_num - 1]
+                    current_num = self._element_holder[current_num - 1]
                 done.append(num)
                 sym_logger.debug('cycle is %s' % str(cycle))
                 cycles.append(tuple(cycle))
@@ -203,4 +206,5 @@ class DiGroup(FinGroup):
         FinGroup.__init__(self, self.elements)
 
         self.type = 'Dihedral'
+
     dih_logger.info('Dihedral class defined')

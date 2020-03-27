@@ -92,7 +92,9 @@ class GroupElem:
             except AssertionError:
                 group_logger.error('Cannot process non-positive powers without associated group')
                 raise TypeError
-            return (pow(self, -power).inverse())
+            group_logger.warning('ass-group is %s' % self.associated_group.type)
+            group_logger.warning('element is %s' % str(self.display))
+            return (pow(self, -power)).inverse()
 
     def __str__(self):
         return str(self.display)

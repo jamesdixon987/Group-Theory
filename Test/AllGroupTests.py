@@ -78,17 +78,18 @@ class test_group(unittest.TestCase):
                 self.assertIn(elem, G.elements)
 
                 self.assertTrue(FinGroup.get_inverse(elem, G) * elem == G.identity)
+                self.assertTrue(G.is_inverse(elem, elem.inverse()))
                 self.assertEqual(G.operation(elem, fixed_element), elem * fixed_element)
 
                 self.assertTrue(elem == elem)
                 self.assertFalse(elem != elem)
 
+                self.assertIs(elem, elem**1)
+                self.assertIs(elem.inverse(), elem**-1)
                 self.assertTrue(elem**2 == elem * elem)
-                self.assertEqual(elem**-2,FinGroup.get_inverse(elem**2, G))
-                self.assertTrue(G.is_inverse(elem, elem.inverse()))
+                self.assertEqual(elem**-2,G.get_inverse(elem**2, G))
 
                 count += 1
-
 
 
 if __name__ == "__main__":
