@@ -21,6 +21,9 @@ class IntegerGroup(Group):
 
         self._current_element_list = {-1, 0, 1}
 
+        self.type = 'Integer'
+        self.group_description =  'Integers under addition'
+
         integer_group_logger.warning('IntegerGroup is initialised with a current element list of {-1, 0, 1}. Other elements are added as needed. ')
 
     def __call__(self, called_integer_element):

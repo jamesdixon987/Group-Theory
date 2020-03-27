@@ -29,7 +29,8 @@ class CycGroup(FinGroup):
 
         FinGroup.__init__(self, self.elements)
 
-        self.type = 'Cyclic order %d' % order
+        self.type = 'Cyclic'
+        self.group_description =  'Cyclic order %d' % order
 
         cyc_logger.info('Symmetric group of order %d created' % order)
 

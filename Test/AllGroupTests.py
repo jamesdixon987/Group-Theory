@@ -76,6 +76,7 @@ class test_group(unittest.TestCase):
                 elem = next(iter_group)
 
                 self.assertIn(elem, G.elements)
+                self.assertIs(elem, G(elem._element_holder))
 
                 self.assertTrue(FinGroup.get_inverse(elem, G) * elem == G.identity)
                 self.assertTrue(G.is_inverse(elem, elem.inverse()))

@@ -31,6 +31,7 @@ class SymGroup(FinGroup):
         FinGroup.__init__(self, self.elements)
 
         self.type = 'Symmetric'
+        self.group_description = 'Symmetric order %d' % order
 
         generator1 = list(range(2, order + 1))
         generator1.append(1)
@@ -80,9 +81,8 @@ class SymGroupElem(FinGroupElem):
          * group_identity - must have a group associated
          """
 
-        self.group_type = 'Symmetric'
-
         self.associated_group = associated_group
+        self.group_type = 'Symmetric'
 
         if self.associated_group is None:
             self.group_order = len(Sn_tuple)
@@ -206,5 +206,6 @@ class DiGroup(FinGroup):
         FinGroup.__init__(self, self.elements)
 
         self.type = 'Dihedral'
+        self.group_description =  'Dihedral order %d' % order
 
     dih_logger.info('Dihedral class defined')

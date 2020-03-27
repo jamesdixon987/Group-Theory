@@ -9,11 +9,15 @@ class Group:
     WITHIN EACH SUBCLASS OF GROUP, THE FOLLOWING MUST BE DEFINED:
 
     Attributes:
+    * .type
+    * .group_description
 
-     Operations:
 
-     Methods:
-     """
+    Operations:
+
+    Methods:
+
+    """
 
     def __init__(self):
         group_logger.info('Initiating Group object')
@@ -75,6 +79,8 @@ class GroupElem:
 
     def __pow__(self, power):
         assert(isinstance(power, int))
+        group_logger.debug('ass-group is %s' % self.associated_group.type)
+        group_logger.debug('element is %s' % str(self.display))
         if power == 0:
             try:
                 assert(self.associated_group != None)
@@ -92,8 +98,6 @@ class GroupElem:
             except AssertionError:
                 group_logger.error('Cannot process non-positive powers without associated group')
                 raise TypeError
-            group_logger.warning('ass-group is %s' % self.associated_group.type)
-            group_logger.warning('element is %s' % str(self.display))
             return (pow(self, -power)).inverse()
 
     def __str__(self):

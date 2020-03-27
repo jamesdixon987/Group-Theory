@@ -12,6 +12,8 @@ class FinGroup(Group):
 
     Attributes:
      * .elements - a list of the elements
+     * .type
+     * .group_description
 
      Operations:
 
