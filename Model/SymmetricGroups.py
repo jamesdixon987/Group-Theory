@@ -81,7 +81,9 @@ class SymGroupElem(FinGroupElem):
          * group_identity - must have a group associated
          """
 
+        assert(isinstance(associated_group, FinGroup) or associated_group is None)
         self.associated_group = associated_group
+
         self.group_type = 'Symmetric'
 
         if self.associated_group is None:
