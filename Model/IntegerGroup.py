@@ -20,7 +20,7 @@ class IntegerGroup(Group):
 
         self._current_element_list = {-1, 0, 1}
 
-        super().__init__(self, identity = self.elements[1], type = 'Integer',
+        super().__init__(identity = self.elements[1], type = 'Integer',
                        group_description = 'Integers under addition', finite = False)
 
         integer_group_logger.warning('IntegerGroup is initialised with a current element list of {-1, 0, 1}. '
@@ -70,7 +70,7 @@ class IntegerGroupElem(GroupElem):
         assert(isinstance(new_integer, int))
         integer_group_logger.info('Initiating IntegerGroupElem object %d' %new_integer)
 
-        super().__init__(self, group_type = 'Integer')
+        super().__init__(group_type = 'Integer')
 
         self.display = '%d in %s' %(new_integer, u'\u2124')
 
