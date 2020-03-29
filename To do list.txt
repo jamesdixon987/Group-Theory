@@ -1,6 +1,7 @@
 FUNCTIONALITY NEEDING FIXING:
 
-* Generating set for symmetric groups contains different instances of objects from the element lost. Perhaps a 'return_element' function that will find an element object corresponding to a specific function?
+* Sort out all properties and create some help documentation listing what properties need to be created for all types of new groups implemented in the program.
+* Sort out why FinGroup has an associated_group property. (Fails unittests if removed).
 
 
 
