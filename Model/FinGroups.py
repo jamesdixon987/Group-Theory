@@ -139,7 +139,10 @@ class FinGroupElem(GroupElem):
             raise AttributeError
         return self.associated_group.identity
 
-    def get_elem_order(self, group):
+    def get_elem_order(self, group = None):
+        if group is None:
+            group = self.associated_group
+        assert(group is not None)
         testing = self
         count = 1
         while testing != group.identity:

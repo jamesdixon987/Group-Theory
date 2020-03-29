@@ -77,12 +77,11 @@ class CycGroupElem(FinGroupElem):
                                %(ZnInt, group_order, ZnInt % group_order))
             ZnInt = ZnInt % group_order
 
-        FinGroupElem.__init__(self)
+        FinGroupElem.__init__(self, associated_group = associated_group)
 
         self.group_order = group_order
         cyc_logger.debug('Group is order %d' %group_order)
-        self.associated_group = associated_group
-        cyc_logger.debug('No group initially associated')
+
         self._number = ZnInt
 
         self.display = "%s (mod %s)" %(ZnInt,group_order)

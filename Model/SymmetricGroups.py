@@ -28,10 +28,8 @@ class SymGroup(FinGroup):
 
         sym_logger.info('Symmetric group of order %d created' % order)
 
-        FinGroup.__init__(self, self.elements)
-
-        self.type = 'Symmetric'
-        self.group_description = 'Symmetric order %d' % order
+        FinGroup.__init__(self, self.elements, type = 'Symmetric', group_description = 'Symmetric order %d' % order,
+                          associated_group = self)
 
         generator1 = list(range(2, order + 1))
         generator1.append(1)
@@ -50,8 +48,6 @@ class SymGroupElem(FinGroupElem):
 
     def __init__(self, Sn_tuple, associated_group = None):
         assert(isinstance(Sn_tuple, tuple))
-
-        FinGroupElem.__init__(self)
 
         """
         Attributes:
@@ -82,7 +78,7 @@ class SymGroupElem(FinGroupElem):
          """
 
         assert(isinstance(associated_group, FinGroup) or associated_group is None)
-        self.associated_group = associated_group
+        FinGroupElem.__init__(self, associated_group = associated_group)
 
         self.group_type = 'Symmetric'
 
@@ -197,17 +193,17 @@ class DiGroup(FinGroup):
 
             self.elements = FinGroupElem.generate(SymGroupElem(generator1),
                                                   SymGroupElem(generator2)).elements
+
+
         for element in self.elements:
             element.associated_group = self
             element.group_type = 'Dihedral'
 
+        FinGroup.__init__(self, self.elements, type = 'Dihedral', group_description = 'Dihedral order %d' % order,
+                  associated_group = self)
+
         dih_logger.debug('self.elements created')
 
         dih_logger.info('Dihedral group of order %d created' % order)
-
-        FinGroup.__init__(self, self.elements)
-
-        self.type = 'Dihedral'
-        self.group_description =  'Dihedral order %d' % order
 
     dih_logger.info('Dihedral class defined')
