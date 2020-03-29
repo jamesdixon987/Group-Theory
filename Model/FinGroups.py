@@ -23,7 +23,7 @@ class FinGroup(Group):
     def __init__(self, elements, type = None, group_description = None, associated_group = None):
         fin_group_logger.info('Initiating FinGroup object')
 
-        Group.__init__(self)
+        super().__init__(self)
 
         self.finite = True
 
@@ -109,7 +109,7 @@ class FinGroupElem(GroupElem):
 
         self.associated_group = associated_group
 
-        GroupElem.__init__(self)
+        super().__init__(self)
 
     def inverse(self):
         fin_group_logger.debug('Initialising FinGroupElem.inverse method')

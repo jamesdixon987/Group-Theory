@@ -69,7 +69,7 @@ class GroupElem:
      """
 
 
-    def __init__(self, group_type = None):
+    def __init__(self, group_type=None):
 
         group_logger.info('Initiating Group object')
 

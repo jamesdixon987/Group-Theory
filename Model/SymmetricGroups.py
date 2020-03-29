@@ -78,7 +78,7 @@ class SymGroupElem(FinGroupElem):
          """
 
         assert(isinstance(associated_group, FinGroup) or associated_group is None)
-        FinGroupElem.__init__(self, associated_group = associated_group)
+        super().__init__(self, associated_group = associated_group)
 
         self.group_type = 'Symmetric'
 
@@ -199,7 +199,7 @@ class DiGroup(FinGroup):
             element.associated_group = self
             element.group_type = 'Dihedral'
 
-        FinGroup.__init__(self, self.elements, type = 'Dihedral', group_description = 'Dihedral order %d' % order,
+        super().__init__(self, self.elements, type = 'Dihedral', group_description = 'Dihedral order %d' % order,
                   associated_group = self)
 
         dih_logger.debug('self.elements created')
