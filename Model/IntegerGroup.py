@@ -100,12 +100,12 @@ class IntegerGroupElem(GroupElem):
 
     def inverse(self):
         integer_group_logger.debug('Initialising IntegerGroupElem.inverse method')
-        try:
-            assert(self.associated_group is not None)
-            integer_group_logger.debug('Element has associated group %s' %self.associated_group)
-        except AssertionError:
-            integer_group_logger.error('Cannot find inverse if element has no associated group')
-            raise AttributeError
+        if self.associated_group is None:
+            error_message = 'Cannot find inverse if element has no associated group'
+            integer_group_logger.error(error_message)
+            raise AttributeError(error_message)
+
+        integer_group_logger.debug('Element has associated group %s' %self.associated_group)
         return self.associated_group(-self.value)
 
 

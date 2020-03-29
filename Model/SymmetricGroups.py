@@ -28,7 +28,7 @@ class SymGroup(FinGroup):
 
         sym_logger.info('Symmetric group of order %d created' % order)
 
-        FinGroup.__init__(self, self.elements, type = 'Symmetric', group_description = 'Symmetric order %d' % order,
+        super().__init__(self, self.elements, type = 'Symmetric', group_description = f'Symmetric order {order}',
                           associated_group = self)
 
         generator1 = list(range(2, order + 1))
@@ -55,22 +55,22 @@ class SymGroupElem(FinGroupElem):
          * .group_order - an integer denoting the order of the symmetric group
          * .display - a display of the tuple representing the element
          * .order
-         
+
          Operations:
          * mul - group operation
          * call - shows where a number (1 to n) moves to under the element
-         
+
          Methods:
          * get_cycle_representation - fairly self-explanatory
-         
+
          Inherited Attributes:
          * _inverse_holder - placeholder for inverse, so it doesn't have to be recalculated every time
-         
+
          Inherited Operations:
          * pow - power in group operation
          * eq & ne - compare elements
          * str - string representation of element.dsiplay
-         
+
          Inherited Methods:
          * inverse - must have a group associated
          * order - order of element; must have a group associated
