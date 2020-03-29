@@ -19,12 +19,20 @@ class Group:
 
     """
 
-    def __init__(self):
+    def __init__(self, identity = None, type = None, group_description = None, finite = False):
         group_logger.info('Initiating Group object')
 
-        self.elements = []
+        self.finite = finite
 
-        self.finite = False
+        self.type = type
+
+        self.group_description = group_description
+
+        self.identity = identity
+
+    def __contains__(self, item):
+        assert isinstance(item, GroupElem)
+        return item in self.elements
 
     def __hash__(self):
         return hash(self.elements)

@@ -35,6 +35,9 @@ class test_group(unittest.TestCase):
             elem1 = G.elements[0]
             elem2 = G.elements[1]
 
+            self.assertIsNot(G.type, None)
+            self.assertIsNot(G.group_description, None)
+
             self.assertTrue(isinstance(G.elements, tuple) or isinstance(G.elements, list))
 
             self.assertEqual(elem1.associated_group, G)
@@ -50,7 +53,7 @@ class test_group(unittest.TestCase):
     def test_finite_groups(self):
         group_list = []
         # Please note that groups must have size at least 5 to be added to this list.
-        for n in range(3,8):
+        for n in range(3,7):
             group_list.append(SymGroup(n))
         for n in range(7, 12):
             generated_group_creator1 = list(range(2,n))

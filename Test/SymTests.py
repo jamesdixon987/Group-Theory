@@ -9,6 +9,7 @@ class test_group(unittest.TestCase):
     def test_sym_group(self):
         for n in range(2, 8):
             S = SymGroup(n)
+            self.assertTrue(S.finite)
             self.assertEqual(S.order, n)
             self.assertEqual(len(S.elements), factorial(n))
             self.assertEqual(S.identity, SymGroupElem(tuple(range(1, n + 1))))
@@ -31,17 +32,17 @@ class test_group(unittest.TestCase):
             self.assertEqual(elem.group_order, S.order)
             self.assertEqual(elem.group_type, 'Symmetric')
 
-            self.assertEqual(n, elem.tuple_rep)
+            self.assertEqual(n, elem._element_holder)
 
     def test_dih_group(self):
         for n in range(3, 12):
             D = DiGroup(n)
+            self.assertTrue(D.finite)
             self.assertEqual(D.order, n)
             self.assertEqual(D.size(), 2 * n)
             self.assertEqual(len(D.elements), 2 * n)
             self.assertEqual(D.identity, SymGroupElem(tuple(range(1, n + 1))))
             self.assertEqual(D.elements[2].group_type, 'Dihedral')
-
 
 if __name__ == "__main__":
     unittest.main()
