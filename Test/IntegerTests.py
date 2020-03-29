@@ -8,8 +8,28 @@ from Model.IntegerGroup import IntegerGroupElem
 class test_group(unittest.TestCase):
     def test_int_group(self):
         Z = IntegerGroup()
+
+        self.assertEqual(Z.type, 'Integer')
+        self.assertEqual(Z.group_description, 'Integers under addition')
+        self.assertFalse(Z.finite)
+
         self.assertEqual(Z.identity, Z(0))
         self.assertTrue(Z.is_identity(Z.identity))
+
+        self.assertFalse(Z.check_integer_initialised(8))
+        fixed_elem = Z(8)
+        self.assertTrue(Z.check_integer_initialised(8))
+        self.assertIn(fixed_elem, Z.elements)
+        self.assertIn(8, Z._current_element_list)
+
+        self.assertFalse(Z.check_integer_initialised(-8))
+        Z.initialise_integer(-8)
+        self.assertTrue(Z.check_integer_initialised(-8))
+
+        self.assertEqual(Z(-8), Z.get_inverse(8))
+        Z.initialise_integer(9)
+        self.assertEqual(Z(-9), Z.get_inverse(9))
+
         for elem in Z.elements:
             self.assertTrue(isinstance(elem, IntegerGroupElem))
             self.assertTrue(Z.check_integer_initialised(elem))
@@ -28,6 +48,7 @@ class test_group(unittest.TestCase):
         for n in range(1, 8):
             elem = Z.elements[2] ** n
             self.assertIn(elem, Z.elements)
+            self.assertIn(n, Z._current_element_list)
             self.assertIs(elem.group_identity, Z.identity)
             self.assertEqual(elem.value, n)
 

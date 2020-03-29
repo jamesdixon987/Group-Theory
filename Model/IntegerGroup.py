@@ -17,14 +17,14 @@ class IntegerGroup(Group):
 
         for elem in self.elements:
             elem.group_identity = self.elements[1]
-        self.identity = self.elements[1]
 
         self._current_element_list = {-1, 0, 1}
 
-        self.type = 'Integer'
-        self.group_description =  'Integers under addition'
+        Group.__init__(self, identity = self.elements[1], type = 'Integer',
+                       group_description = 'Integers under addition', finite = False)
 
-        integer_group_logger.warning('IntegerGroup is initialised with a current element list of {-1, 0, 1}. Other elements are added as needed. ')
+        integer_group_logger.warning('IntegerGroup is initialised with a current element list of {-1, 0, 1}. '
+                                     'Other elements are added as needed. ')
 
     def __call__(self, called_integer_element):
         integer_group_logger.info('Initiating IntegerGroup call')
@@ -33,10 +33,9 @@ class IntegerGroup(Group):
         called_integer_element_object = IntegerGroupElem(called_integer_element, self)
 
         if self.check_integer_initialised(called_integer_element):
-            return called_integer_element_object
-        else:
-            self.initialise_integer(called_integer_element_object)
-            return called_integer_element_object
+            pass
+        else: self.initialise_integer(called_integer_element_object)
+        return called_integer_element_object
 
     def check_integer_initialised(self, new_poss_integer):
         assert(isinstance(new_poss_integer, int) or isinstance(new_poss_integer, IntegerGroupElem))
@@ -71,13 +70,11 @@ class IntegerGroupElem(GroupElem):
         assert(isinstance(new_integer, int))
         integer_group_logger.info('Initiating IntegerGroupElem object %d' %new_integer)
 
-        GroupElem.__init__(self)
+        GroupElem.__init__(self, group_type = 'Integer')
 
         self.display = '%d in %s' %(new_integer, u'\u2124')
 
         self.value = new_integer
-
-        self.group_type = 'Integer'
 
         self.associated_group = associated_group
 

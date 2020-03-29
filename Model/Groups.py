@@ -69,13 +69,13 @@ class GroupElem:
      """
 
 
-    def __init__(self):
+    def __init__(self, group_type = None):
 
         group_logger.info('Initiating Group object')
 
         self._inverse_holder = None
 
-        self.group_type = None
+        self.group_type = group_type
 
     def __eq__(self, other):
         group_logger.debug('1st element is %s, 2nd element is %s' %(str(self.display), str(other.display)))

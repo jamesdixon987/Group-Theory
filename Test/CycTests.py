@@ -10,10 +10,17 @@ class test_group(unittest.TestCase):
     def test_cyc_group(self):
         for n in range(2, 12):
             C = CycGroup(n)
+
+            self.assertTrue(C.finite)
+            self.assertEqual(C.type, 'Cyclic')
+            self.assertTrue(C.abelian)
+
             self.assertEqual(C.order, n)
             self.assertEqual(len(C.elements), n)
             self.assertTrue(isinstance(C.elements, tuple))
+
             self.assertEqual(C.identity, CycGroupElem(0, n))
+
             self.assertEqual(C.elements[0].associated_group, C)
 
             iter_group = iter(C)
