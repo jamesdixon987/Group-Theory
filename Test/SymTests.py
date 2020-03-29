@@ -21,6 +21,8 @@ class test_group(unittest.TestCase):
 
         self.assertTrue(S.identity == SymGroupElem((1,2,3,4)))
 
+        self.assertTrue(S(fixed_element) in S)
+
         self.assertEqual(SymGroupElem.get_cycle_representation(fixed_element), ((1,2),(3,4)))
         self.assertEqual(SymGroupElem.cycle_type(fixed_element), (2,2))
         self.assertEqual(fixed_element.get_elem_order(group = S), 2)

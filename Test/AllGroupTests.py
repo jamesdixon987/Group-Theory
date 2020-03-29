@@ -35,16 +35,24 @@ class test_group(unittest.TestCase):
             elem1 = G.elements[0]
             elem2 = G.elements[1]
 
+            self.assertTrue(isinstance(hash(G), int))
             self.assertIsNot(G.type, None)
             self.assertIsNot(G.group_description, None)
 
+            self.assertTrue(G.is_identity(G.identity))
+            self.assertTrue(G.is_inverse(elem1, elem1.inverse()))
+            self.assertTrue(G.is_inverse(elem2, elem2.inverse()))
+
             self.assertTrue(isinstance(G.elements, tuple) or isinstance(G.elements, list))
+            self.assertTrue(elem1 in G)
 
             self.assertEqual(elem1.associated_group, G)
             self.assertEqual(elem1.associated_group, elem2.associated_group)
 
             self.assertEqual(elem1 * elem2, G.operation(elem1, elem2))
             self.assertEqual(elem1 * elem1, G.operation(elem1, elem1))
+            self.assertEqual(elem2 * elem1, G.operation(elem2, elem1))
+            self.assertEqual(elem2 * elem2, G.operation(elem2, elem2))
 
             self.assertNotEqual(elem1.group_type, None)
             self.assertEqual(elem1.group_type, elem2.group_type)
@@ -71,6 +79,10 @@ class test_group(unittest.TestCase):
             #     self.assertEqual(SymGroupElem.generate(G.generating_set).elements, G.elements)
 
             self.assertTrue(isinstance(G.elements, tuple))
+            self.assertEqual(G.size(), len(G.elements))
+
+            self.assertTrue(G.finite)
+
             fixed_element = G.elements[1]
 
             iter_group = iter(G)
@@ -80,9 +92,10 @@ class test_group(unittest.TestCase):
 
                 self.assertIn(elem, G.elements)
                 self.assertIs(elem, G(elem._element_holder))
+                self.assertIs(elem.associated_group, G)
 
-                self.assertTrue(FinGroup.get_inverse(elem, G) * elem == G.identity)
-                self.assertTrue(G.is_inverse(elem, elem.inverse()))
+                self.assertEqual(G.get_inverse(elem, G) * elem, G.identity)
+
                 self.assertEqual(G.operation(elem, fixed_element), elem * fixed_element)
 
                 self.assertTrue(elem == elem)

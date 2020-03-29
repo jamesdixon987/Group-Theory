@@ -35,7 +35,7 @@ class Group:
         return item in self.elements
 
     def __hash__(self):
-        return hash(self.elements)
+        return hash(str(self.elements))
 
     def operation(self, first_element, second_element):
         assert(first_element in self.elements and second_element in self.elements)
