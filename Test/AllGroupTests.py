@@ -73,6 +73,11 @@ class test_group(unittest.TestCase):
 
         group_list.append(SymGroupElem.generate(
             SymGroupElem((2,3,4,5,1)),SymGroupElem((2,1,4,3,5))))
+
+        group_list.append(FinGroup.direct_product(SymGroup(3), DiGroup(3)))
+        group_list.append(FinGroup.direct_product(CycGroup(5), DiGroup(4)))
+        group_list.append(FinGroup.direct_product(SymGroup(3), CycGroup(4)))
+
         for G in group_list:
 
             # if G.generating_set is not None:
