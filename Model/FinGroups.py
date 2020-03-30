@@ -35,8 +35,6 @@ class FinGroup(Group):
 
         self.elements = elements
 
-        self.abelian = all(a * b == b * a for a in self.elements for b in self.elements)
-
         self.identity = FinGroup.get_identity(self.elements)
 
         self.generating_set = None
@@ -62,6 +60,23 @@ class FinGroup(Group):
     def show_elements(self):
         for element in self.elements:
             print(element.display)
+
+    def is_abelian(self):
+        return all(a * b == b * a for a in self.elements for b in self.elements)
+
+    @classmethod
+    def direct_product(cls, first, other):
+        assert(isinstance(other, FinGroup))
+        fin_group_logger.info('Initiating direct_product method with %s and %s'
+                              % (first.group_description, other.group_description))
+        elements = tuple(ProductGroupElem(_element_holder = (elem1,elem2))
+                         for elem1 in first.elements for elem2 in other.elements)
+        result_group = FinGroup(elements, type = 'Product of %s and %s' % (first.type, other.type),
+                    group_description = 'Product of %s and %s' % (first.group_description, other.group_description))
+        for elem in result_group.elements:
+            elem.associated_group = result_group
+        return result_group
+
 
     @classmethod
     def get_inverse(cls, g, group):
@@ -103,11 +118,12 @@ class FinGroupElem(GroupElem):
      """
 
 
-    def __init__(self, associated_group = None):
-
-        fin_group_logger.info('Initiating FinGroup object')
+    def __init__(self, associated_group = None, _element_holder = None):
+        fin_group_logger.info('Initiating FinGroupElem object')
 
         self.associated_group = associated_group
+
+        self._element_holder = _element_holder
 
         super().__init__()
 
@@ -175,3 +191,21 @@ class FinGroupElem(GroupElem):
             element.associated_group = generated_group
         return generated_group
 
+
+class ProductGroupElem(FinGroupElem):
+
+    def __init__(self, associated_group = None, _element_holder = None):
+        fin_group_logger.info('Initiating FinGroupElem object')
+
+        super().__init__(associated_group = associated_group, _element_holder = _element_holder)
+
+        self.display = (self._element_holder[0].display, self._element_holder[1].display)
+
+        self.group_type = 'Product'
+
+    def __mul__(self, other):
+        assert(isinstance(other, ProductGroupElem))
+
+        result = (self._element_holder[0] * other._element_holder[0],
+                  self._element_holder[1] * other._element_holder[1])
+        return self.associated_group(result)

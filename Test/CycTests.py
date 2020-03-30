@@ -13,7 +13,7 @@ class test_group(unittest.TestCase):
 
             self.assertTrue(C.finite)
             self.assertEqual(C.type, 'Cyclic')
-            self.assertTrue(C.abelian)
+            self.assertTrue(C.is_abelian())
 
             self.assertEqual(C.order, n)
             self.assertEqual(len(C.elements), n)

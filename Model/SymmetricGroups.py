@@ -2,6 +2,7 @@ import logging
 import itertools
 from Model.FinGroups import FinGroup
 from Model.FinGroups import FinGroupElem
+from Model.FinGroups import ProductGroupElem
 
 sym_logger = logging.getLogger('sym_logger')
 sym_logger.info('sym_logger created')
@@ -207,3 +208,9 @@ class DiGroup(FinGroup):
         dih_logger.info('Dihedral group of order %d created' % order)
 
     dih_logger.info('Dihedral class defined')
+
+S = SymGroup(2)
+S2 = SymGroup(2)
+
+G = FinGroup.direct_product(S, S2)
+print (G.type)
