@@ -208,9 +208,3 @@ class DiGroup(FinGroup):
         dih_logger.info('Dihedral group of order %d created' % order)
 
     dih_logger.info('Dihedral class defined')
-
-S = SymGroup(2)
-S2 = SymGroup(2)
-
-G = FinGroup.direct_product(S, S2)
-print (G.type)

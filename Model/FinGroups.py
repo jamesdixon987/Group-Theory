@@ -194,7 +194,7 @@ class FinGroupElem(GroupElem):
 
 class ProductGroupElem(FinGroupElem):
 
-    def __init__(self, associated_group = None, _element_holder = None):
+    def __init__(self, _element_holder = None, associated_group = None):
         fin_group_logger.info('Initiating FinGroupElem object')
 
         super().__init__(associated_group = associated_group, _element_holder = _element_holder)
@@ -208,4 +208,7 @@ class ProductGroupElem(FinGroupElem):
 
         result = (self._element_holder[0] * other._element_holder[0],
                   self._element_holder[1] * other._element_holder[1])
-        return self.associated_group(result)
+        if self.associated_group is None:
+            return ProductGroupElem(result)
+        else:
+            return self.associated_group(_element_holder=result)
