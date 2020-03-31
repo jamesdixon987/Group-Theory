@@ -2,16 +2,19 @@ FUNCTIONALITY NEEDING FIXING:
 
 * Sort out all properties and create some help documentation listing what properties need to be created for all types of new groups implemented in the program.
 * Sort out why FinGroup has an associated_group property. (Fails unittests if removed).
-
+* Improve efficiency of 'generate' function.
+* Finish writing __eq__ for groups
+* Finish cayley table for finite groups
 
 
 NEXT STEPS:
 
 * Normal Subgroups
-* Product of two groups to make new group
 * Would like to find another infinite group to implement (one that is not isomorphic to Z) - Z is a bit lonely. Not sure which one yet.
 
-PERHAPS IN THE FUTURE:
+IN THE FUTURE:
 * Homomorphisms
+* find_isomorphism() for finite groups
 * is_simple() function for finite groups
+* is_nilpotent() function for finite groups
 
