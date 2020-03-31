@@ -64,6 +64,15 @@ class FinGroup(Group):
     def is_abelian(self):
         return all(a * b == b * a for a in self.elements for b in self.elements)
 
+    # Currently prints every element on a new line - thinking about what to do
+
+    # def print_cayley_table(self):
+    #     for a in self:
+    #         for b in self:
+    #             c = a*b
+    #             print(str(c) + ',')
+    #         print('')
+
     @classmethod
     def direct_product(cls, first, other):
         assert(isinstance(other, FinGroup))
@@ -76,7 +85,6 @@ class FinGroup(Group):
         for elem in result_group.elements:
             elem.associated_group = result_group
         return result_group
-
 
     @classmethod
     def get_inverse(cls, g, group):
@@ -141,10 +149,6 @@ class FinGroupElem(GroupElem):
             return self._inverse_holder
         else: return self._inverse_holder
 
-    def order(self):
-        fin_group_logger.debug('Initialising FinGroup.order method')
-        return FinGroup.get_elem_order(self, group_identity(self))
-
     def group_identity(self):
         fin_group_logger.debug('Initialising FinGroupElem.group_identity method')
         try:
@@ -154,6 +158,10 @@ class FinGroupElem(GroupElem):
             fin_group_logger.warning('Cannot find identity if element has no associated group')
             raise AttributeError
         return self.associated_group.identity
+
+    def order(self):
+        fin_group_logger.debug('Initialising FinGroup.order method')
+        return FinGroup.get_elem_order(self, group_identity(self))
 
     def get_elem_order(self, group = None):
         if group is None:

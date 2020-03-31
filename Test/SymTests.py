@@ -40,6 +40,7 @@ class test_group(unittest.TestCase):
     def test_dih_group(self):
         for n in range(3, 12):
             D = DiGroup(n)
+
             self.assertTrue(D.finite)
             self.assertEqual(D.order, n)
             self.assertEqual(D.size(), 2 * n)

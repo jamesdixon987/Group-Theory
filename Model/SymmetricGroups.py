@@ -96,7 +96,10 @@ class SymGroupElem(FinGroupElem):
 
         self._element_holder = Sn_tuple
 
-        self.display = SymGroupElem.get_cycle_representation(self)
+        self.cycles = SymGroupElem.get_cycle_representation(self)
+
+        self.display = SymGroupElem.display_cycles(self)
+
         sym_logger.debug('element cycle representation is %s' % str(self.display))
 
         sym_logger.debug('Symmetric group element {} defined'.format(self.display))
@@ -119,10 +122,20 @@ class SymGroupElem(FinGroupElem):
 
     def cycle_type(self):
         result = []
-        for g in self.display:
+        for g in self.cycles:
             result.append(len(g))
         sym_logger.debug('element cycle type is %s' % str(result))
         return tuple(result)
+
+    @classmethod
+    def display_cycles(cls, self):
+        cycle_display_string = ''
+        for cycle in self.cycles:
+            if len(cycle) > 1:
+                cycle_display_string = cycle_display_string + str(cycle)
+        if cycle_display_string == '':
+            return '()'
+        else: return cycle_display_string.replace(',','')
 
     @classmethod
     def get_cycle_representation(cls, self):
@@ -195,6 +208,7 @@ class DiGroup(FinGroup):
             self.elements = FinGroupElem.generate(SymGroupElem(generator1),
                                                   SymGroupElem(generator2)).elements
 
+            self.generating_set = (generator1, generator2)
 
         for element in self.elements:
             element.associated_group = self
@@ -208,3 +222,5 @@ class DiGroup(FinGroup):
         dih_logger.info('Dihedral group of order %d created' % order)
 
     dih_logger.info('Dihedral class defined')
+
+
