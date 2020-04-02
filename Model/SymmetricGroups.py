@@ -223,4 +223,3 @@ class DiGroup(FinGroup):
 
     dih_logger.info('Dihedral class defined')
 
-
