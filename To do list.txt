@@ -4,11 +4,11 @@ FUNCTIONALITY NEEDING FIXING:
 * Sort out why FinGroup has an associated_group property. (Fails unittests if removed).
 * Finish writing __eq__ for groups
 * Finish cayley table for finite groups
+* Write tests and debug normal subgroup routine
 
 
 NEXT STEPS:
 
-* Normal Subgroups
 * Would like to find another infinite group to implement (one that is not isomorphic to Z) - Z is a bit lonely. Not sure which one yet.
 
 IN THE FUTURE:
