@@ -92,7 +92,6 @@ class SymGroupElem(FinGroupElem):
             assert k in range(1, self.group_order + 1)
             assert k not in test_unique_list
             test_unique_list.append(k)
-            sym_logger.debug('test list is %s' % test_unique_list)
 
         self._element_holder = Sn_tuple
 
@@ -141,31 +140,23 @@ class SymGroupElem(FinGroupElem):
     def get_cycle_representation(cls, self):
         sym_logger.debug('Initialising get_cycle_representation method')
         num_list = tuple(range(1, self.group_order + 1))
-        sym_logger.debug('num_list is %s' % str(num_list))
-        sym_logger.debug('tuple is %s' % str(self._element_holder))
         done = []
         cycles = []
         for num in num_list:
-            sym_logger.debug('next num is %d' % num)
             if num in done:
-                sym_logger.debug('%d in done' % num)
                 pass
             else:
                 current_num = self._element_holder[num - 1]
-                sym_logger.debug('current_num is %d' % current_num)
                 cycle = [num]
                 while current_num != num:
                     done.append(current_num)
                     cycle.append(current_num)
                     current_num = self._element_holder[current_num - 1]
                 done.append(num)
-                sym_logger.debug('cycle is %s' % str(cycle))
                 cycles.append(tuple(cycle))
         if len(cycles) == 0:
-            sym_logger.debug('element is identity')
             return ()
         else:
-            sym_logger.debug('element cycle representation is %s' % str(cycles))
             return tuple(cycles)
 
     sym_logger.info('SymGroup class defined')

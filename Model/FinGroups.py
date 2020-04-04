@@ -64,6 +64,11 @@ class FinGroup(Group):
     def is_abelian(self):
         return all(a * b == b * a for a in self.elements for b in self.elements)
 
+    def is_normal_subgroup(self, poss_norm_sbgrp):
+        assert(isinstance(poss_norm_sbgrp, FinGroup))
+        return any(g == n for g in self.elements for n in poss_norm_sbgrp.elements) and \
+               all(Set(g * h for h in self) == Set(h * g for h in self) for g in poss_norm_sbgrp)
+
     # Currently prints every element on a new line - thinking about what to do
 
     # def print_cayley_table(self):
@@ -134,6 +139,22 @@ class FinGroupElem(GroupElem):
 
         super().__init__()
 
+    def __pow__(self, power):
+        assert(isinstance(power, int))
+        if power == 0:
+            return self.group_identity()
+        elif power == 1:
+            return self
+        elif power > 1:
+            return self * pow(self, power - 1)
+        else:
+            try:
+                assert(self.associated_group != None)
+            except AssertionError:
+                group_logger.error('Cannot process negative powers without associated group')
+                raise TypeError
+            return (pow(self, -power)).inverse()
+
     def inverse(self):
         fin_group_logger.debug('Initialising FinGroupElem.inverse method')
         try:
@@ -150,25 +171,27 @@ class FinGroupElem(GroupElem):
 
     def group_identity(self):
         fin_group_logger.debug('Initialising FinGroupElem.group_identity method')
-        try:
-            assert(self.associated_group is not None)
-            fin_group_logger.debug('Element has associated group')
-        except AssertionError:
-            fin_group_logger.warning('Cannot find identity if element has no associated group')
-            raise AttributeError
-        return self.associated_group.identity
+        find_identity = self ** 2
+        testing = find_identity * self
+        while testing != self:
+            find_identity *= self
+            testing *= self
+        return find_identity
 
     def order(self):
         fin_group_logger.debug('Initialising FinGroup.order method')
         return FinGroup.get_elem_order(self, group_identity(self))
 
     def get_elem_order(self):
-        testing = self
-        count = 1
-        while testing != self:
-            testing *= self
-            count += 1
-        return count - 1
+        if self ** 2 == self:
+            return 1
+        else:
+            testing = self ** 2
+            count = 2
+            while testing != self:
+                testing *= self
+                count += 1
+            return count - 1
 
     def generate(self, *others):
         fin_group_logger.info('Initialising Helper.generate method')

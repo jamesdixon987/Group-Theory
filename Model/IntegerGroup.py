@@ -95,6 +95,10 @@ class IntegerGroupElem(GroupElem):
         else: result = IntegerGroupElem(self.value + other.value)
         return result
 
+    def __pow__(self, power):
+        assert(isinstance(power, int))
+        return self.associated_group(self.value * power)
+
     def inverse(self):
         integer_group_logger.debug('Initialising IntegerGroupElem.inverse method')
         if self.associated_group is None:

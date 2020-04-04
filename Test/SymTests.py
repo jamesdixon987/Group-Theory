@@ -25,7 +25,7 @@ class test_group(unittest.TestCase):
 
         self.assertEqual(SymGroupElem.get_cycle_representation(fixed_element), ((1,2),(3,4)))
         self.assertEqual(SymGroupElem.cycle_type(fixed_element), (2,2))
-        self.assertEqual(fixed_element.get_elem_order(group = S), 2)
+        self.assertEqual(fixed_element.get_elem_order(), 2)
 
         for n in [(1,2,3,4), (1,2,4,3), (3,2,1,4), (3,2,4,1)]:
             elem = SymGroupElem(n)

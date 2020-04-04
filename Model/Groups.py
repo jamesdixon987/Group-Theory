@@ -90,29 +90,6 @@ class GroupElem:
         group_logger.debug('1st element is %s, 2nd element is %s' %(str(self.display), str(other.display)))
         return not self.display == other.display
 
-    def __pow__(self, power):
-        assert(isinstance(power, int))
-        group_logger.debug('ass-group is %s' % self.associated_group.type)
-        group_logger.debug('element is %s' % str(self.display))
-        if power == 0:
-            try:
-                assert(self.associated_group != None)
-            except AssertionError:
-                group_logger.error('Cannot process non-positive powers without associated group')
-                raise TypeError
-            return group_identity(self)
-        elif power == 1:
-            return self
-        elif power > 1:
-            return self * pow(self, power - 1)
-        else:
-            try:
-                assert(self.associated_group != None)
-            except AssertionError:
-                group_logger.error('Cannot process non-positive powers without associated group')
-                raise TypeError
-            return (pow(self, -power)).inverse()
-
     def __str__(self):
         return str(self.display)
 
