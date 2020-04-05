@@ -32,7 +32,7 @@ class Group:
 
     def __contains__(self, item):
         assert isinstance(item, GroupElem)
-        return item in self.elements
+        return any(item == element for element in self.elements)
 
     def __hash__(self):
         return hash(str(self.elements))

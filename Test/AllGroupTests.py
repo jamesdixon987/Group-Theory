@@ -113,6 +113,26 @@ class test_group(unittest.TestCase):
 
                 count += 1
 
+    def test_subgroups_and_homomorphisms(self):
+        G = SymGroup(4)
+
+        N1 = SymGroupElem.generate(SymGroupElem((2,1,3,4)), SymGroupElem((2,3,4,1)))
+        N2 = SymGroupElem.generate(SymGroupElem((1,3,4,2)), SymGroupElem((2,3,1,4)),
+                                       SymGroupElem((4,2,1,3)), SymGroupElem((4,1,3,2)))
+
+        H1 = SymGroupElem.generate(SymGroupElem((2,1,3,4)))
+        H2 = SymGroupElem.generate(SymGroupElem((2,3,1,4)))
+
+        self.assertTrue(G.is_subgroup(N1))
+        self.assertTrue(G.is_subgroup(N2))
+        self.assertTrue(G.is_subgroup(H1))
+        self.assertTrue(G.is_subgroup(H2))
+
+        self.assertTrue(G.is_normal_subgroup(N1))
+        self.assertTrue(G.is_normal_subgroup(N2))
+        self.assertFalse(G.is_normal_subgroup(H1))
+        self.assertFalse(G.is_normal_subgroup(H2))
+
 
 if __name__ == "__main__":
     unittest.main()

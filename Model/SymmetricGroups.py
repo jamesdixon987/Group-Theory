@@ -23,8 +23,8 @@ class SymGroup(FinGroup):
         self.order = order
         sym_logger.debug('order is %d' % order)
 
-        element_list = tuple(itertools.permutations(range(1, order + 1)))
-        self.elements = tuple(SymGroupElem(g, self) for g in element_list)
+        self.tuple_list = tuple(itertools.permutations(range(1, order + 1)))
+        self.elements = tuple(SymGroupElem(g, self) for g in self.tuple_list)
         sym_logger.debug('self.elements created')
 
         sym_logger.info('Symmetric group of order %d created' % order)
@@ -111,6 +111,8 @@ class SymGroupElem(FinGroupElem):
         result = tuple(second._element_holder[j - 1] for j in self._element_holder)
         sym_logger.debug('result is %s' % (str(result)))
         if self.associated_group is None:
+            return SymGroupElem(result)
+        elif SymGroupElem(result) not in self.associated_group.elements:
             return SymGroupElem(result)
         else:
             return self.associated_group(result)
@@ -214,3 +216,7 @@ class DiGroup(FinGroup):
 
     dih_logger.info('Dihedral class defined')
 
+G = SymGroup(4)
+H = SymGroupElem.generate(SymGroupElem((2,1,3,4)), SymGroupElem((2,3,1,4)), SymGroupElem((4,2,1,3)), SymGroupElem((4,1,3,2)))
+print(H.elements)
+print(G.is_normal_subgroup(H))
