@@ -215,8 +215,3 @@ class DiGroup(FinGroup):
         dih_logger.info('Dihedral group of order %d created' % order)
 
     dih_logger.info('Dihedral class defined')
-
-G = SymGroup(4)
-H = SymGroupElem.generate(SymGroupElem((2,1,3,4)), SymGroupElem((2,3,1,4)), SymGroupElem((4,2,1,3)), SymGroupElem((4,1,3,2)))
-print(H.elements)
-print(G.is_normal_subgroup(H))
