@@ -20,7 +20,7 @@ class FinGroup(Group):
      Methods:
      """
 
-    def __init__(self, elements, type = None, group_description = None, associated_group = None):
+    def __init__(self, elements, type = None, group_description = None):
         fin_group_logger.info('Initiating FinGroup object')
 
         super().__init__()
@@ -30,8 +30,6 @@ class FinGroup(Group):
         self.type = type
 
         self.group_description = group_description
-
-        self.associated_group = associated_group
 
         self.elements = elements
 

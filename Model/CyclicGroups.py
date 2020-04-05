@@ -27,7 +27,7 @@ class CycGroup(FinGroup):
         self.elements = tuple(CycGroupElem(g, self.order, associated_group=self) for g in element_list)
         cyc_logger.debug('self.elements created')
 
-        super().__init__(self.elements, associated_group=self, type = 'Cyclic', group_description = 'Cyclic order %d' % order)
+        super().__init__(self.elements, type = 'Cyclic', group_description = 'Cyclic order %d' % order)
 
         cyc_logger.info('Symmetric group of order %d created' % order)
 

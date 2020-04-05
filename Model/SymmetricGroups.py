@@ -29,8 +29,7 @@ class SymGroup(FinGroup):
 
         sym_logger.info('Symmetric group of order %d created' % order)
 
-        super().__init__(self.elements, type = 'Symmetric', group_description = f'Symmetric order {order}',
-                          associated_group = self)
+        super().__init__(self.elements, type = 'Symmetric', group_description = f'Symmetric order {order}')
 
         generator1 = list(range(2, order + 1))
         generator1.append(1)
@@ -207,8 +206,7 @@ class DiGroup(FinGroup):
             element.associated_group = self
             element.group_type = 'Dihedral'
 
-        super().__init__(self.elements, type = 'Dihedral', group_description = 'Dihedral order %d' % order,
-                  associated_group = self)
+        super().__init__(self.elements, type = 'Dihedral', group_description = 'Dihedral order %d' % order)
 
         dih_logger.debug('self.elements created')
 
