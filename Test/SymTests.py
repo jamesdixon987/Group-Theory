@@ -61,6 +61,16 @@ class test_group(unittest.TestCase):
             self.assertEqual(D.identity, SymGroupElem(tuple(range(1, n + 1))))
             self.assertEqual(D.elements[2].group_type, 'Dihedral')
 
+    def test_alt_group(self):
+        for n in range(3, 7):
+            A = AltGroup(n)
+
+            self.assertTrue(A.finite)
+            self.assertEqual(A.order, n)
+            self.assertEqual(A.size(), factorial(n)/2)
+            self.assertEqual(len(A.elements), factorial(n)/2)
+            self.assertEqual(A.identity, SymGroupElem(tuple(range(1, n + 1))))
+            self.assertEqual(A.elements[1].group_type, 'Alternating')
 
 if __name__ == "__main__":
     unittest.main()

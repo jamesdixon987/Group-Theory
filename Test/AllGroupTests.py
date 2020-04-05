@@ -9,6 +9,7 @@ group_test_logger.info('group_test_logger created')
 from Model.SymmetricGroups import SymGroup
 from Model.SymmetricGroups import SymGroupElem
 from Model.SymmetricGroups import DiGroup
+from Model.SymmetricGroups import AltGroup
 from Model.CyclicGroups import CycGroup
 from Model.CyclicGroups import CycGroupElem
 from Model.FinGroups import FinGroup
@@ -21,6 +22,7 @@ class test_group(unittest.TestCase):
         group_list = [IntegerGroup()]
         for n in range(2,6):
             group_list.append(SymGroup(n))
+            group_list.append(AltGroup(n))
 
         for n in range(7, 12):
             generated_group_creator = list(range(2,n))
@@ -63,6 +65,7 @@ class test_group(unittest.TestCase):
         # Please note that groups must have size at least 5 to be added to this list.
         for n in range(3,7):
             group_list.append(SymGroup(n))
+            group_list.append(AltGroup(n))
         for n in range(7, 12):
             generated_group_creator1 = list(range(2,n))
             generated_group_creator1.append(1)
@@ -119,17 +122,20 @@ class test_group(unittest.TestCase):
         N1 = SymGroupElem.generate(SymGroupElem((2,1,3,4)), SymGroupElem((2,3,4,1)))
         N2 = SymGroupElem.generate(SymGroupElem((1,3,4,2)), SymGroupElem((2,3,1,4)),
                                        SymGroupElem((4,2,1,3)), SymGroupElem((4,1,3,2)))
+        N3 = AltGroup(4)
 
         H1 = SymGroupElem.generate(SymGroupElem((2,1,3,4)))
         H2 = SymGroupElem.generate(SymGroupElem((2,3,1,4)))
 
         self.assertTrue(G.is_subgroup(N1))
         self.assertTrue(G.is_subgroup(N2))
+        self.assertTrue(G.is_subgroup(N3))
         self.assertTrue(G.is_subgroup(H1))
         self.assertTrue(G.is_subgroup(H2))
 
         self.assertTrue(G.is_normal_subgroup(N1))
         self.assertTrue(G.is_normal_subgroup(N2))
+        self.assertTrue(G.is_normal_subgroup(N3))
         self.assertFalse(G.is_normal_subgroup(H1))
         self.assertFalse(G.is_normal_subgroup(H2))
 

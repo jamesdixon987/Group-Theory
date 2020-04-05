@@ -25,8 +25,6 @@ class SymGroup(FinGroup):
         self.elements = tuple(SymGroupElem(g, self) for g in self.tuple_list)
         sym_logger.debug('self.elements created')
 
-        sym_logger.info('Symmetric group of order %d created' % order)
-
         super().__init__(self.elements, type = 'Symmetric', group_description = f'Symmetric order {order}')
 
         generator1 = list(range(2, order + 1))
@@ -37,6 +35,8 @@ class SymGroup(FinGroup):
             generator2.append(x)
         generator2 = SymGroupElem(tuple(generator2), associated_group = self)
         self.generating_set = (generator1, generator2)
+
+        sym_logger.info('Symmetric group of order %d created' % order)
 
     sym_logger.info('SymGroup class defined')
 
@@ -217,28 +217,39 @@ class DiGroup(FinGroup):
 
     dih_logger.info('Dihedral class defined')
 
-# class AltGroup(FinGroup):
-#     sym_logger.info('Initiating AltGroup class')
-#
-#     def __init__(self, order):
-#         assert(isinstance(order, int) and order > 1)
-#
-#         self.order = order
-#         sym_logger.debug('AltGroup order is %d' % order)
-#
-#         self.tuple_list = tuple(itertools.permutations(range(1, order + 1)))
-#         self.elements = tuple(SymGroupElem(g, self) for g in self.tuple_list)
-#         sym_logger.debug('self.elements created')
-#
-#         sym_logger.info('Symmetric group of order %d created' % order)
-#
-#         super().__init__(self.elements, type = 'Symmetric', group_description = f'Symmetric order {order}')
-#
-#         generator1 = list(range(2, order + 1))
-#         generator1.append(1)
-#         generator1 = SymGroupElem(tuple(generator1), associated_group = self)
-#         generator2 = [2, 1]
-#         for x in range(3, order + 1):
-#             generator2.append(x)
-#         generator2 = SymGroupElem(tuple(generator2), associated_group = self)
-#         self.generating_set = (generator1, generator2)
+class AltGroup(FinGroup):
+    sym_logger.info('Initiating AltGroup class')
+
+    def __init__(self, order):
+        assert(isinstance(order, int) and order > 1)
+
+        self.order = order
+        sym_logger.debug('AltGroup order is %d' % order)
+
+        tuple_list = tuple(itertools.permutations(range(1, order + 1)))
+        self.elements = tuple(SymGroupElem(g, associated_group = self) for g in tuple_list
+                              if _tuple_parity(g) == 1)
+        sym_logger.debug('self.elements created')
+
+        for element in self.elements:
+            element.associated_group = self
+            element.group_type = 'Alternating'
+
+        super().__init__(self.elements, type = 'Alternating', group_description = f'Alternating order {order}')
+
+        sym_logger.info('Alternating group of order %d created' % order)
+
+
+def _tuple_parity(tuple_to_sort):
+    sym_logger.info('sorting %s with _tuple_parity method' % str(tuple_to_sort))
+    list_to_sort = list(tuple_to_sort)
+    parity = 1
+    sorted = list(tuple_to_sort)
+    sorted.sort()
+    while sorted != list_to_sort:
+        for n in range(len(list_to_sort) - 1):
+            if list_to_sort[n] > list_to_sort[n+1]:
+                list_to_sort[n], list_to_sort[n+1] = list_to_sort[n+1], list_to_sort[n]
+                parity *= -1
+    return parity
+
