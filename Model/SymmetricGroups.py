@@ -14,10 +14,6 @@ class SymGroup(FinGroup):
     def __init__(self, order):
         assert(isinstance(order, int) and order > 1)
 
-        """
-        Attributes:
-        """
-
         self.order = order
         sym_logger.debug('SymGroup order is %d' % order)
 
@@ -46,36 +42,8 @@ class SymGroupElem(FinGroupElem):
 
     def __init__(self, Sn_tuple, associated_group = None):
         assert(isinstance(Sn_tuple, tuple))
-
-        """
-        Attributes:
-         * .group_type - 'Symmetric'
-         * .group_order - an integer denoting the order of the symmetric group
-         * .display - a display of the tuple representing the element
-         * .order
-
-         Operations:
-         * mul - group operation
-         * call - shows where a number (1 to n) moves to under the element
-
-         Methods:
-         * get_cycle_representation - fairly self-explanatory
-
-         Inherited Attributes:
-         * _inverse_holder - placeholder for inverse, so it doesn't have to be recalculated every time
-
-         Inherited Operations:
-         * pow - power in group operation
-         * eq & ne - compare elements
-         * str - string representation of element.dsiplay
-
-         Inherited Methods:
-         * inverse - must have a group associated
-         * order - order of element; must have a group associated
-         * group_identity - must have a group associated
-         """
-
         assert(isinstance(associated_group, FinGroup) or associated_group is None)
+
         super().__init__(associated_group = associated_group)
 
         self.group_type = 'Symmetric'
@@ -177,13 +145,6 @@ class DiGroup(FinGroup):
         dih_logger.info('Initiating DiGroup object')
         dih_logger.warning('Digroup(n) represents the symmetries of an n-sided polygon')
         assert(isinstance(order, int) and order > 1)
-
-        """
-        Attributes:
-         * .order - an integer denoting the order of the dihedral group
-         * .elements - a set of the objects that are the elements
-         * .identity - a member of .elements that represents the group identity
-        """
 
         self.order = order
         dih_logger.debug('order is %d' % order)

@@ -17,6 +17,28 @@ class test_group(unittest.TestCase):
             self.assertEqual(S.identity, SymGroupElem(tuple(range(1, n + 1))))
             self.assertTrue(S.is_identity(S.identity))
 
+    def test_dih_group(self):
+        for n in range(3, 12):
+            D = DiGroup(n)
+
+            self.assertTrue(D.finite)
+            self.assertEqual(D.order, n)
+            self.assertEqual(D.size(), 2 * n)
+            self.assertEqual(len(D.elements), 2 * n)
+            self.assertEqual(D.identity, SymGroupElem(tuple(range(1, n + 1))))
+            self.assertEqual(D.elements[2].group_type, 'Dihedral')
+
+    def test_alt_group(self):
+        for n in range(3, 7):
+            A = AltGroup(n)
+
+            self.assertTrue(A.finite)
+            self.assertEqual(A.order, n)
+            self.assertEqual(A.size(), factorial(n)/2)
+            self.assertEqual(len(A.elements), factorial(n)/2)
+            self.assertEqual(A.identity, SymGroupElem(tuple(range(1, n + 1))))
+            self.assertEqual(A.elements[1].group_type, 'Alternating')
+
     def test_sym_group_elem(self):
         S = SymGroup(4)
         fixed_element = SymGroupElem((2,1,4,3))
@@ -49,28 +71,6 @@ class test_group(unittest.TestCase):
             self.assertEqual(elem.group_type, 'Symmetric')
 
             self.assertEqual(n, elem._element_holder)
-
-    def test_dih_group(self):
-        for n in range(3, 12):
-            D = DiGroup(n)
-
-            self.assertTrue(D.finite)
-            self.assertEqual(D.order, n)
-            self.assertEqual(D.size(), 2 * n)
-            self.assertEqual(len(D.elements), 2 * n)
-            self.assertEqual(D.identity, SymGroupElem(tuple(range(1, n + 1))))
-            self.assertEqual(D.elements[2].group_type, 'Dihedral')
-
-    def test_alt_group(self):
-        for n in range(3, 7):
-            A = AltGroup(n)
-
-            self.assertTrue(A.finite)
-            self.assertEqual(A.order, n)
-            self.assertEqual(A.size(), factorial(n)/2)
-            self.assertEqual(len(A.elements), factorial(n)/2)
-            self.assertEqual(A.identity, SymGroupElem(tuple(range(1, n + 1))))
-            self.assertEqual(A.elements[1].group_type, 'Alternating')
 
 if __name__ == "__main__":
     unittest.main()

@@ -4,21 +4,6 @@ group_logger = logging.getLogger('group_logger')
 group_logger.info('group_logger created')
 
 class Group:
-
-    """
-    WITHIN EACH SUBCLASS OF GROUP, THE FOLLOWING MUST BE DEFINED:
-
-    Attributes:
-    * .type
-    * .group_description
-
-
-    Operations:
-
-    Methods:
-
-    """
-
     def __init__(self, identity = None, type = None, group_description = None, finite = False):
         group_logger.info('Initiating Group object')
 
@@ -61,19 +46,6 @@ class Group:
         return cls.is_identity(first_elem * second_elem)
 
 class GroupElem:
-
-    """
-    WITHIN EACH SUBCLASS OF GROUPELEM, THE FOLLOWING MUST BE DEFINED:
-
-    Attributes:
-     * .display - a unique (within group) display of the element. Used for __eq__ & __ne__
-
-     Operations:
-
-     Methods:
-     """
-
-
     def __init__(self, group_type=None):
 
         group_logger.info('Initiating Group object')

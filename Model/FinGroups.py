@@ -6,20 +6,6 @@ fin_group_logger = logging.getLogger('fin_group_logger')
 fin_group_logger.info('fin_group_logger created')
 
 class FinGroup(Group):
-
-    """
-    WITHIN EACH SUBCLASS OF FINGROUP, THE FOLLOWING MUST BE DEFINED:
-
-    Attributes:
-     * .elements - a list of the elements
-     * .type
-     * .group_description
-
-     Operations:
-
-     Methods:
-     """
-
     def __init__(self, elements, type = None, group_description = None):
         fin_group_logger.info('Initiating FinGroup object')
 
@@ -121,22 +107,6 @@ class FinGroup(Group):
 
 
 class FinGroupElem(GroupElem):
-
-    """
-    WITHIN EACH SUBCLASS OF FINGROUPELEM, THE FOLLOWING MUST BE DEFINED:
-
-    Attributes:
-     * element.display - a unique (within group) 'nice' display for each element. Used for __eq__ & __ne__
-     * element._element_holder - a unique display used for searching for elements in group (e.g. in __mul__)
-
-     Operations:
-     * mul (*) - group binary operation between elements
-
-     Methods:
-     * group_identity - returns an element object, group identity
-     """
-
-
     def __init__(self, associated_group = None, _element_holder = None):
         fin_group_logger.info('Initiating FinGroupElem object')
 
