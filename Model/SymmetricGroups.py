@@ -16,12 +16,10 @@ class SymGroup(FinGroup):
 
         """
         Attributes:
-         * .order - an integer denoting the order of the symmetric group
-         * .elements - a set of the objects that are the elements
         """
 
         self.order = order
-        sym_logger.debug('order is %d' % order)
+        sym_logger.debug('SymGroup order is %d' % order)
 
         self.tuple_list = tuple(itertools.permutations(range(1, order + 1)))
         self.elements = tuple(SymGroupElem(g, self) for g in self.tuple_list)
@@ -94,9 +92,7 @@ class SymGroupElem(FinGroupElem):
 
         self._element_holder = Sn_tuple
 
-        self.cycles = SymGroupElem.get_cycle_representation(self)
-
-        self.display = SymGroupElem.display_cycles(self)
+        self.display = self.display_cycles()
 
         sym_logger.debug('element cycle representation is %s' % str(self.display))
 
@@ -122,23 +118,23 @@ class SymGroupElem(FinGroupElem):
 
     def cycle_type(self):
         result = []
-        for g in self.cycles:
-            result.append(len(g))
+        cycle_list = self.cycles()
+        for cycle in cycle_list:
+            result.append(len(cycle))
         sym_logger.debug('element cycle type is %s' % str(result))
         return tuple(result)
 
-    @classmethod
-    def display_cycles(cls, self):
+    def display_cycles(self):
         cycle_display_string = ''
-        for cycle in self.cycles:
+        cycle_list = self.cycles()
+        for cycle in cycle_list:
             if len(cycle) > 1:
                 cycle_display_string = cycle_display_string + str(cycle)
         if cycle_display_string == '':
             return '()'
         else: return cycle_display_string.replace(',','')
 
-    @classmethod
-    def get_cycle_representation(cls, self):
+    def cycles(self):
         sym_logger.debug('Initialising get_cycle_representation method')
         num_list = tuple(range(1, self.group_order + 1))
         done = []
@@ -159,6 +155,13 @@ class SymGroupElem(FinGroupElem):
             return ()
         else:
             return tuple(cycles)
+
+    def permutation_parity(self):
+        parity = 1
+        for num in self.cycle_type():
+            if num % 2 == 0:
+                parity *= -1
+        return parity
 
     sym_logger.info('SymGroup class defined')
 
@@ -213,3 +216,29 @@ class DiGroup(FinGroup):
         dih_logger.info('Dihedral group of order %d created' % order)
 
     dih_logger.info('Dihedral class defined')
+
+# class AltGroup(FinGroup):
+#     sym_logger.info('Initiating AltGroup class')
+#
+#     def __init__(self, order):
+#         assert(isinstance(order, int) and order > 1)
+#
+#         self.order = order
+#         sym_logger.debug('AltGroup order is %d' % order)
+#
+#         self.tuple_list = tuple(itertools.permutations(range(1, order + 1)))
+#         self.elements = tuple(SymGroupElem(g, self) for g in self.tuple_list)
+#         sym_logger.debug('self.elements created')
+#
+#         sym_logger.info('Symmetric group of order %d created' % order)
+#
+#         super().__init__(self.elements, type = 'Symmetric', group_description = f'Symmetric order {order}')
+#
+#         generator1 = list(range(2, order + 1))
+#         generator1.append(1)
+#         generator1 = SymGroupElem(tuple(generator1), associated_group = self)
+#         generator2 = [2, 1]
+#         for x in range(3, order + 1):
+#             generator2.append(x)
+#         generator2 = SymGroupElem(tuple(generator2), associated_group = self)
+#         self.generating_set = (generator1, generator2)
