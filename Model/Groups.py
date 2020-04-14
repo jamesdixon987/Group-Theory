@@ -22,10 +22,11 @@ class Group:
     def __hash__(self):
         return hash(str(self.elements))
 
-    # def __eq__(self, other):
-    #     test_equal = all(
-    #                     any(other_elem == self_elem for other_elem in other.elements)
-    #                                 for self_elem in self.elements)
+    def __eq__(self, other):
+        test_equal = all(
+                        any(other_elem == self_elem for other_elem in other.elements)
+                                    for self_elem in self.elements)
+        return test_equal
 
     def operation(self, first_element, second_element):
         assert(first_element in self.elements and second_element in self.elements)

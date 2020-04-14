@@ -123,10 +123,13 @@ class FinGroupElem(GroupElem):
         elif power == 1:
             return self
         elif power > 1:
-            return self * pow(self, power - 1)
+            if power % 2 == 1:
+                return self * (self ** (power - 1))
+            else:
+                return (self * self) ** (int(power / 2))
         else:
             try:
-                assert(self.associated_group != None)
+                assert(self.associated_group is not None)
             except AssertionError:
                 fin_group_logger.error('Cannot process negative powers without associated group')
                 raise TypeError

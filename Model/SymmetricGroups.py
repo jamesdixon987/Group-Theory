@@ -12,6 +12,11 @@ class SymGroup(FinGroup):
     sym_logger.info('Initiating SymGroup class')
 
     def __init__(self, order):
+        #Errors
+        if not isinstance(order, int):
+            raise TypeError('order must be an integer')
+        if not order > 1:
+            raise ValueError('order must be greater than 1')
         assert(isinstance(order, int) and order > 1)
 
         self.order = order
@@ -142,8 +147,7 @@ class DiGroup(FinGroup):
     dih_logger.info('Initiating DiGroup class')
 
     def __init__(self, order):
-        dih_logger.info('Initiating DiGroup object')
-        dih_logger.warning('Digroup(n) represents the symmetries of an n-sided polygon')
+        dih_logger.info('Digroup(n) represents the symmetries of an n-sided polygon')
         assert(isinstance(order, int) and order > 1)
 
         self.order = order

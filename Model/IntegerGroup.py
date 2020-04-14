@@ -6,10 +6,8 @@ integer_group_logger = logging.getLogger('integer_group_logger')
 integer_group_logger.info('integer_group_logger created')
 
 class IntegerGroup(Group):
-    integer_group_logger.info('Initiating IntegerGroup class')
 
     def __init__(self):
-        integer_group_logger.info('Initiating IntegerGroup object')
 
         self.elements = [IntegerGroupElem(-1, self, _from_IntegerGroup_init = True),
                          IntegerGroupElem(0, self, _from_IntegerGroup_init = True),
@@ -23,7 +21,7 @@ class IntegerGroup(Group):
         super().__init__(identity = self.elements[1], type = 'Integer',
                        group_description = 'Integers under addition', finite = False)
 
-        integer_group_logger.warning('IntegerGroup is initialised with a current element list of {-1, 0, 1}. '
+        integer_group_logger.info('IntegerGroup is initialised with a current element list of {-1, 0, 1}. '
                                      'Other elements are added as needed. ')
 
     def __call__(self, called_integer_element):
@@ -80,7 +78,7 @@ class IntegerGroupElem(GroupElem):
 
         if _from_IntegerGroup_init:
             self.group_identity = None
-        else: self.group_identity = None if associated_group == None else self.associated_group.identity
+        else: self.group_identity = None if associated_group is None else self.associated_group.identity
 
         integer_group_logger.debug('associated group is %s' %associated_group)
 
