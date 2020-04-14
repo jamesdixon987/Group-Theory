@@ -6,15 +6,11 @@ logging.basicConfig(level=logging.WARNING)
 group_test_logger.info('group_test_logger created')
 
 from math import factorial
-from Model.SymmetricGroups import SymGroup
-from Model.SymmetricGroups import SymGroupElem
-from Model.SymmetricGroups import DiGroup
-from Model.SymmetricGroups import AltGroup
-from Model.CyclicGroups import CycGroup
-from Model.CyclicGroups import CycGroupElem
-from Model.FinGroups import FinGroup
-from Model.IntegerGroup import IntegerGroup
-from Model.IntegerGroup import IntegerGroupElem
+from Model.SymmetricGroups import *
+from Model.CyclicGroups import *
+from Model.FinGroups import *
+from Model.IntegerGroup import *
+from Model.Errors import *
 
 
 class test_sym_groups(unittest.TestCase):
@@ -90,6 +86,22 @@ class test_sym_groups(unittest.TestCase):
 
             self.assertEqual(n, elem._element_holder)
 
+    def test_sym_etc_errors(self):
+        self.assertRaises(TypeError, SymGroup, 'Three Rings for the Elven-kings under the sky')
+        self.assertRaises(TypeError, DiGroup, 'Seven for the Dwarf-lords in their halls of stone')
+        self.assertRaises(TypeError, AltGroup, 'Nine for Mortal Men doomed to die')
+        self.assertRaises(TypeError, SymGroupElem, 'One for the Dark Lord on his dark throne')
+
+        sym_group_list = [SymGroup, DiGroup, AltGroup]
+        for group in sym_group_list:
+            self.assertRaises(ValueError, group, 1)
+            self.assertRaises(ValueError, group, 0)
+            self.assertRaises(ValueError, group, -2)
+            self.assertRaises(TypeError, group, 1.5)
+
+        self.assertRaises(ValueError, SymGroupElem, (1,2,4))
+        self.assertRaises(ValueError, SymGroupElem, (1,2,4.2))
+        self.assertRaises(ValueError, SymGroupElem, (1,2,3,3))
 
 class test_cyc_groups(unittest.TestCase):
 
@@ -192,6 +204,8 @@ class test_int_group(unittest.TestCase):
         self.assertIs(loose_elem.associated_group, None)
         self.assertEqual(loose_elem.value, 553)
 
+    def test_int_group_errors(self):
+        self.assertRaises(TypeError, Z, 'Life before death, strength before weakness, journey before destination')
 
 class test_groups(unittest.TestCase):
     global group_list, inf_group_list
@@ -248,6 +262,10 @@ class test_groups(unittest.TestCase):
 
                 count += 1
 
+    def test_fin_group_errors(self):
+        for G in group_list:
+            self.assertRaises(GroupElementError, G, SymGroupElem((1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)))
+
     inf_group_list = group_list[1:]
     inf_group_list.append(IntegerGroup())
 
@@ -269,7 +287,8 @@ class test_groups(unittest.TestCase):
             self.assertTrue(G.is_inverse(elem2, elem2.inverse()))
 
             self.assertTrue(isinstance(G.elements, tuple) or isinstance(G.elements, list))
-            self.assertTrue(elem1 in G)
+            self.assertIn(elem1, G)
+            self.assertNotIn('Gandalf', G)
 
             self.assertEqual(elem1.associated_group, G)
             self.assertEqual(elem1.associated_group, elem2.associated_group)
@@ -309,6 +328,12 @@ class test_groups(unittest.TestCase):
         self.assertTrue(G.is_normal_subgroup(N3))
         self.assertFalse(G.is_normal_subgroup(H1))
         self.assertFalse(G.is_normal_subgroup(H2))
+
+    def test_group_errors(self):
+        for G in inf_group_list:
+            self.assertRaises(ValueError, G.operation, 'One Ring to rule them all', 'One Ring to find them')
+            self.assertRaises(TypeError, G.is_identity, 'One Ring to bring them all, and in the darkness bind them')
+            self.assertRaises(TypeError, G.is_inverse, 'In the land of Mordor', 'where shadows lie')
 
 
 if __name__ == "__main__":

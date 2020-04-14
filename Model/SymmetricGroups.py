@@ -1,8 +1,7 @@
 import logging
 import itertools
-from Model.FinGroups import FinGroup
-from Model.FinGroups import FinGroupElem
-from Model.FinGroups import ProductGroupElem
+from Model.FinGroups import *
+from Model.Errors import *
 
 sym_logger = logging.getLogger('sym_logger')
 sym_logger.info('sym_logger created')
@@ -17,7 +16,6 @@ class SymGroup(FinGroup):
             raise TypeError('order must be an integer')
         if not order > 1:
             raise ValueError('order must be greater than 1')
-        assert(isinstance(order, int) and order > 1)
 
         self.order = order
         sym_logger.debug('SymGroup order is %d' % order)
@@ -46,7 +44,22 @@ class SymGroupElem(FinGroupElem):
     sym_logger.info('Initiating SymGroupElem class')
 
     def __init__(self, Sn_tuple, associated_group = None):
-        assert(isinstance(Sn_tuple, tuple))
+        # Errors
+        if not isinstance(Sn_tuple, tuple):
+            raise TypeError('Sn_tuple must be an tuple')
+        if not len(Sn_tuple) > 1:
+            raise ValueError('length must be greater than 1')
+
+        test_unique_list = []
+        for k in Sn_tuple:
+            if not isinstance(k, int):
+                raise ValueError('values must be integers')
+            if not k in range(1, len(Sn_tuple) + 1):
+                raise ValueError('values must range from 1 to length of tuple')
+            if k in test_unique_list:
+                raise ValueError('values must not be repeated')
+            test_unique_list.append(k)
+
         assert(isinstance(associated_group, FinGroup) or associated_group is None)
 
         super().__init__(associated_group = associated_group)
@@ -57,25 +70,22 @@ class SymGroupElem(FinGroupElem):
             self.group_order = len(Sn_tuple)
         else: self.group_order = self.associated_group.order
 
-        test_unique_list = []
-        for k in Sn_tuple:
-            assert k in range(1, self.group_order + 1)
-            assert k not in test_unique_list
-            test_unique_list.append(k)
-
         self._element_holder = Sn_tuple
 
-        self.display = self.display_cycles()
+        self.display = self.display_cycles() + ' in %s group order %d' % (self.group_type, self.group_order)
 
         sym_logger.debug('element cycle representation is %s' % str(self.display))
 
         sym_logger.debug('Symmetric group element {} defined'.format(self.display))
 
     def __mul__(self, second):
-        sym_logger.debug('1st element is %s, 2nd element is %s' % (str(self.display), str(second.display)))
-        assert(isinstance(second, SymGroupElem))
-        assert(self.group_order == second.group_order)
+        #Errors
+        if not isinstance(second, SymGroupElem):
+            raise TypeError('Invalid type for * operation with SymGroupElem')
+        if self.group_order != second.group_order:
+            raise GroupOrderError('Elements must be of the same order')
         sym_logger.debug('Elements are from symmetric group of group_order %d' % self.group_order)
+
         result = tuple(second._element_holder[j - 1] for j in self._element_holder)
         sym_logger.debug('result is %s' % (str(result)))
         if self.associated_group is None:
@@ -147,9 +157,13 @@ class DiGroup(FinGroup):
     dih_logger.info('Initiating DiGroup class')
 
     def __init__(self, order):
-        dih_logger.info('Digroup(n) represents the symmetries of an n-sided polygon')
-        assert(isinstance(order, int) and order > 1)
+        # Errors
+        if not isinstance(order, int):
+            raise TypeError('order must be an integer')
+        if not order > 1:
+            raise ValueError('order must be greater than 1')
 
+        dih_logger.info('Digroup(n) represents the symmetries of an n-sided polygon')
         self.order = order
         dih_logger.debug('order is %d' % order)
 
@@ -186,7 +200,11 @@ class AltGroup(FinGroup):
     sym_logger.info('Initiating AltGroup class')
 
     def __init__(self, order):
-        assert(isinstance(order, int) and order > 1)
+        # Errors
+        if not isinstance(order, int):
+            raise TypeError('order must be an integer')
+        if not order > 1:
+            raise ValueError('order must be greater than 1')
 
         self.order = order
         sym_logger.debug('AltGroup order is %d' % order)

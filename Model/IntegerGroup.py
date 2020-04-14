@@ -25,9 +25,8 @@ class IntegerGroup(Group):
                                      'Other elements are added as needed. ')
 
     def __call__(self, called_integer_element):
-        integer_group_logger.info('Initiating IntegerGroup call')
-        assert(isinstance(called_integer_element, int))
-
+        if not isinstance(called_integer_element, int):
+            raise TypeError('int object expected')
         called_integer_element_object = IntegerGroupElem(called_integer_element, self)
 
         if self.check_integer_initialised(called_integer_element):

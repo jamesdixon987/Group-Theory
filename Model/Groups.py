@@ -1,4 +1,5 @@
 import logging
+from Model.Errors import *
 
 group_logger = logging.getLogger('group_logger')
 group_logger.info('group_logger created')
@@ -16,7 +17,6 @@ class Group:
         self.identity = identity
 
     def __contains__(self, item):
-        assert isinstance(item, GroupElem)
         return any(item == element for element in self.elements)
 
     def __hash__(self):
@@ -29,22 +29,23 @@ class Group:
         return test_equal
 
     def operation(self, first_element, second_element):
-        assert(first_element in self.elements and second_element in self.elements)
-        return first_element * second_element
+        if first_element in self.elements and second_element in self.elements:
+            return first_element * second_element
+        else: raise ValueError('group operation must be called with elements of the group')
 
     @classmethod
     def is_identity(cls, possible_id) -> bool:
-        group_logger.info('Initiating FinGroup class method is_identity')
-        if possible_id * possible_id == possible_id:
-            return True
-        else: return False
+        if isinstance(possible_id, GroupElem):
+            if possible_id * possible_id == possible_id:
+                return True
+            else: return False
+        else: raise TypeError('GroupElem objects expected')
 
     @classmethod
     def is_inverse(cls, first_elem, second_elem) -> bool:
-        assert (isinstance(first_elem, GroupElem))
-        assert (isinstance(second_elem, GroupElem))
-        group_logger.info('Initiating FinGroup class method is_inverse')
-        return cls.is_identity(first_elem * second_elem)
+        if isinstance(first_elem, GroupElem) and isinstance(second_elem, GroupElem):
+            return cls.is_identity(first_elem * second_elem)
+        else: raise TypeError('GroupElem objects expected')
 
 class GroupElem:
     def __init__(self, group_type=None):
@@ -56,11 +57,10 @@ class GroupElem:
         self.group_type = group_type
 
     def __eq__(self, other):
-        group_logger.debug('1st element is %s, 2nd element is %s' %(str(self.display), str(other.display)))
-        return self.display == other.display
+        if isinstance(self, GroupElem) and isinstance(other, GroupElem):
+            return self.display == other.display
 
     def __ne__(self, other):
-        group_logger.debug('1st element is %s, 2nd element is %s' %(str(self.display), str(other.display)))
         return not self.display == other.display
 
     def __str__(self):
