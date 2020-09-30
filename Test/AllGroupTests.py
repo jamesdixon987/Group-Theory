@@ -329,6 +329,11 @@ class test_groups(unittest.TestCase):
         self.assertFalse(G.is_normal_subgroup(H1))
         self.assertFalse(G.is_normal_subgroup(H2))
 
+        self.assertRaises(TypeError, G.is_subgroup, 'Bananas')
+        self.assertRaises(TypeError, G.is_subgroup, IntegerGroup())
+        self.assertRaises(TypeError, G.is_normal_subgroup, 'Bananas')
+        self.assertRaises(TypeError, G.is_normal_subgroup, IntegerGroup())
+
     def test_group_errors(self):
         for G in inf_group_list:
             self.assertRaises(ValueError, G.operation, 'One Ring to rule them all', 'One Ring to find them')

@@ -53,17 +53,22 @@ class FinGroup(Group):
         return all(a * b == b * a for a in self.elements for b in self.elements)
 
     def is_subgroup(self, poss_sbgrp):
-        return  all(any(g == n for g in self.elements) for n in poss_sbgrp.elements)
+        if isinstance(poss_sbgrp, FinGroup):
+            return all(any(g == n for g in self.elements) for n in poss_sbgrp.elements)
+        else:
+            raise TypeError
 
     def is_normal_subgroup(self, poss_norm_sbgrp):
-        assert(isinstance(poss_norm_sbgrp, FinGroup))
-        if self.is_subgroup(poss_norm_sbgrp):
-            n = poss_norm_sbgrp.elements[1]
-            return all(set(g * n for n in poss_norm_sbgrp.elements) == set(n * g for n in poss_norm_sbgrp.elements)
-                   for g in self.elements)
+        if isinstance(poss_norm_sbgrp, FinGroup):
+            if self.is_subgroup(poss_norm_sbgrp):
+                n = poss_norm_sbgrp.elements[1]
+                return all(set(g * n for n in poss_norm_sbgrp.elements) == set(n * g for n in poss_norm_sbgrp.elements)
+                                for g in self.elements)
+            else:
+                print(str(poss_norm_sbgrp) + ' is not a subgroup of ' + str(self))
+                raise ValueError
         else:
-            print(str(poss_norm_sbgrp) + ' is not a subgroup of ' + str(self))
-            raise ValueError
+            raise TypeError
 
     # Currently prints every element on a new line - thinking about what to do
 
