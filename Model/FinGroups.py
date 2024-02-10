@@ -1,6 +1,5 @@
 import logging
 from Model.Groups import *
-from Model.Errors import *
 
 fin_group_logger = logging.getLogger('fin_group_logger')
 fin_group_logger.info('fin_group_logger created')
@@ -37,7 +36,7 @@ class FinGroup(Group):
             calling_result = [item for item in self.elements if item == elem]
         else:
             calling_result = [item for item in self.elements if item._element_holder == elem]
-        if calling_result == []:
+        if not calling_result:
             raise GroupElementError
         fin_group_logger.debug('result is %s elem is %s' % (str(calling_result), str(elem)))
         return calling_result[0]

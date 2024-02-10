@@ -1,5 +1,4 @@
 import logging
-from Model.Errors import *
 
 group_logger = logging.getLogger('group_logger')
 group_logger.info('group_logger created')

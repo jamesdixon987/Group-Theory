@@ -1,7 +1,6 @@
 import logging
 import itertools
 from Model.FinGroups import *
-from Model.Errors import *
 
 sym_logger = logging.getLogger('sym_logger')
 sym_logger.info('sym_logger created')
